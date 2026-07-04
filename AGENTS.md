@@ -18,6 +18,7 @@
 | 1  | Administrador  | Full access, admin settings     |
 | 2  | Gestion        | Reports, clients, inventory     |
 | 3  | Instalador     | Installations, map              |
+| 4  | Ventas         | Sales, contracts, plans         |
 
 ## Key conventions
 - All POST forms: `<?= csrf_field() ?>`
@@ -33,6 +34,7 @@
 | Clientes        | CRUD, IPs, red                           | Admin, Gestión      |
 | Reportes        | Reportes generales, finalización         | Admin, Gestión      |
 | Facturación     | Facturas mensuales, PDF, pagos           | Admin, Gestión      |
+| Ventas          | Dashboard, planes, contratos, ventas     | Admin, Gestión, Ventas |
 | Inventario      | Equipos (ONT, Router, etc.)              | Admin, Gestión      |
 | Instalaciones   | Asignación, geolocalización, equipos     | Admin, Instalador   |
 | Mapa            | Cobertura Leaflet/OSM, zonas             | Todos               |
@@ -65,14 +67,16 @@
 - Equipment inventory module (CRUD, filtering by type/state)
 - Installations module (assignment, geolocation, equipment registration)
 - Billing module (create invoice, items, auto-number, PDF, mark paid/void, dashboard stats)
+- Sales module (dashboard, plans CRUD, contracts, sales registry, commissions)
 - Removed ISP-specific modules (Claro, Azteka, Dialnet, Liberty)
+- Role Ventas (id_rol=4) added with dedicated sidebar and permissions
 - Security system (CSRF, lockout, bitácora, session timeout, XSS fixes)
 - Profile module (edit profile, change password)
 - Settings module (admin panel, writes .env)
 - All hardcoded URLs/credentials eliminated
 - SMTP credentials in `.env` (recuperar_procesa.php uses SMTP_* constants)
 - Navbar user dropdown (Perfil, Configuración, Cerrar sesión)
-- DB schema cleanup (`redreport.sql` with all CREATE TABLE + Instalador role)
+- DB schema cleanup (`redreport.sql` with all CREATE TABLE + all roles)
 - Sidebar cleanup: all items now consistent (collapsible with arrow + submenu)
 
 ### Pending

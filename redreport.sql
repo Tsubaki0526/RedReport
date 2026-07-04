@@ -122,7 +122,8 @@ CREATE TABLE `tb_rol` (
 INSERT INTO `tb_rol` (`id_rol`, `nombre_rol`, `fh_creasion`) VALUES
 (1, 'Administrador', '2025-08-22 17:48:34'),
 (2, 'Gestion', '2025-09-09 12:33:46'),
-(3, 'Instalador', '2025-09-09 12:35:00');
+(3, 'Instalador', '2025-09-09 12:35:00'),
+(4, 'Ventas', '2026-07-04 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -241,7 +242,7 @@ ALTER TABLE `tb_reportes_registrador`
 -- AUTO_INCREMENT de la tabla `tb_rol`
 --
 ALTER TABLE `tb_rol`
-  MODIFY `id_rol` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_rol` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `tb_usuarios`
@@ -432,6 +433,98 @@ ALTER TABLE `tb_facturas`
 
 ALTER TABLE `tb_factura_items`
   ADD CONSTRAINT `tb_factura_items_ibfk_1` FOREIGN KEY (`id_factura`) REFERENCES `tb_facturas` (`id_factura`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `tb_planes`
+--
+
+CREATE TABLE `tb_planes` (
+  `id_plan` int(11) NOT NULL,
+  `nombre` varchar(100) NOT NULL,
+  `velocidad` varchar(50) DEFAULT NULL,
+  `precio` decimal(12,2) NOT NULL,
+  `descripcion` text DEFAULT NULL,
+  `activo` tinyint(1) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+INSERT INTO `tb_planes` (`id_plan`, `nombre`, `velocidad`, `precio`, `descripcion`, `activo`) VALUES
+(1, 'Plan Basico', '20MB', 35000.00, 'Internet 20MB residencial', 1),
+(2, 'Plan Estandar', '50MB', 55000.00, 'Internet 50MB residencial', 1),
+(3, 'Plan Premium', '100MB', 85000.00, 'Internet 100MB residencial', 1),
+(4, 'Plan Empresarial', '200MB', 150000.00, 'Internet 200MB empresarial', 1);
+
+ALTER TABLE `tb_planes`
+  ADD PRIMARY KEY (`id_plan`);
+
+ALTER TABLE `tb_planes`
+  MODIFY `id_plan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `tb_contratos`
+--
+
+CREATE TABLE `tb_contratos` (
+  `id_contrato` int(11) NOT NULL,
+  `id_cliente` int(11) NOT NULL,
+  `id_plan` int(11) NOT NULL,
+  `id_vendedor` int(11) NOT NULL,
+  `fecha_inicio` date NOT NULL,
+  `fecha_fin` date DEFAULT NULL,
+  `estado` enum('activo','cancelado','expirado') NOT NULL DEFAULT 'activo',
+  `notas` text DEFAULT NULL,
+  `fecha_creacion` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+ALTER TABLE `tb_contratos`
+  ADD PRIMARY KEY (`id_contrato`),
+  ADD KEY `id_cliente` (`id_cliente`),
+  ADD KEY `id_plan` (`id_plan`),
+  ADD KEY `id_vendedor` (`id_vendedor`);
+
+ALTER TABLE `tb_contratos`
+  MODIFY `id_contrato` int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `tb_contratos`
+  ADD CONSTRAINT `tb_contratos_ibfk_1` FOREIGN KEY (`id_cliente`) REFERENCES `tb_clientes` (`id_cliente`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `tb_contratos_ibfk_2` FOREIGN KEY (`id_plan`) REFERENCES `tb_planes` (`id_plan`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `tb_contratos_ibfk_3` FOREIGN KEY (`id_vendedor`) REFERENCES `tb_usuarios` (`id_usuario`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `tb_ventas`
+--
+
+CREATE TABLE `tb_ventas` (
+  `id_venta` int(11) NOT NULL,
+  `id_contrato` int(11) DEFAULT NULL,
+  `id_cliente` int(11) NOT NULL,
+  `id_vendedor` int(11) NOT NULL,
+  `tipo` enum('nuevo','renovacion','upgrade') NOT NULL DEFAULT 'nuevo',
+  `monto` decimal(12,2) NOT NULL,
+  `comision` decimal(12,2) DEFAULT 0.00,
+  `fecha` date NOT NULL,
+  `notas` text DEFAULT NULL,
+  `fecha_creacion` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+ALTER TABLE `tb_ventas`
+  ADD PRIMARY KEY (`id_venta`),
+  ADD KEY `id_contrato` (`id_contrato`),
+  ADD KEY `id_cliente` (`id_cliente`),
+  ADD KEY `id_vendedor` (`id_vendedor`);
+
+ALTER TABLE `tb_ventas`
+  MODIFY `id_venta` int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `tb_ventas`
+  ADD CONSTRAINT `tb_ventas_ibfk_1` FOREIGN KEY (`id_contrato`) REFERENCES `tb_contratos` (`id_contrato`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `tb_ventas_ibfk_2` FOREIGN KEY (`id_cliente`) REFERENCES `tb_clientes` (`id_cliente`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `tb_ventas_ibfk_3` FOREIGN KEY (`id_vendedor`) REFERENCES `tb_usuarios` (`id_usuario`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 COMMIT;
 

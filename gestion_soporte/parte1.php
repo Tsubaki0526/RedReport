@@ -70,6 +70,39 @@ $url = APP_URL;
             </ul>
           </li>
 
+          <?php if ($_SESSION['id_rol'] != 3): ?>
+          <!-- Ventas -->
+          <li class="nav-item">
+            <a href="#" class="nav-link active" data-bs-toggle="collapse" data-bs-target="#menuVentasG" aria-expanded="false">
+              <i class="fas fa-chart-line nav-icon"></i>
+              <span>Ventas</span>
+              <i class="fas fa-angle-right right ms-auto"></i>
+            </a>
+            <ul class="nav nav-treeview collapse" id="menuVentasG">
+              <li class="nav-item">
+                <a href="<?= $url ?>ventas/index.php" class="nav-link">
+                  <i class="fas fa-chart-pie"></i> Dashboard
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="<?= $url ?>ventas/planes.php" class="nav-link">
+                  <i class="fas fa-tags"></i> Planes
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="<?= $url ?>ventas/contratos.php" class="nav-link">
+                  <i class="fas fa-file-contract"></i> Contratos
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="<?= $url ?>ventas/ventas.php" class="nav-link">
+                  <i class="fas fa-cart-plus"></i> Ventas
+                </a>
+              </li>
+            </ul>
+          </li>
+          <?php endif; ?>
+
           <!-- Facturacion -->
           <li class="nav-item">
             <a href="#" class="nav-link active" data-bs-toggle="collapse" data-bs-target="#menuFacturacionG" aria-expanded="false">
