@@ -1,0 +1,35 @@
+td.observaciones {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 250px; /* ancho fijo */
+}
+
+td.acciones {
+    width: 100px;   /* ajusta según necesites */
+    text-align: center;
+    white-space: nowrap;
+}
+
+
+/* Encabezado de la tabla */
+#example1 thead th {
+    font-size: 16px;      /* tamaño del texto */
+    padding: 6px 8px;     /* espacio interno */
+    white-space: nowrap;  /* evita saltos de línea innecesarios */
+    text-align: center;   /* centra el texto */
+}
+
+/* Encabezado de la tabla */
+#tfoot thead th {
+    font-size: 16px;      /* tamaño del texto */
+    padding: 6px 8px;     /* espacio interno */
+    white-space: nowrap;  /* evita saltos de línea innecesarios */
+    text-align: center;   /* centra el texto */
+}
+
+.solucion {
+    white-space: pre-wrap; /* respeta saltos de línea y permite ajuste */
+    word-wrap: break-word; /* fuerza a cortar palabras largas */
+    max-width: 600px;      /* ancho máximo opcional */
+}

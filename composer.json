@@ -1,0 +1,25 @@
+{
+    "name": "redreport/app",
+    "type": "project",
+    "description": "Sistema de gestion de reportes, clientes y usuarios",
+    "authors": [
+        {
+            "name": "RedReport",
+            "email": "admin@redreport.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.4",
+        "dompdf/dompdf": "^2.0",
+        "phpmailer/phpmailer": "^6.9"
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^3.7"
+    },
+    "scripts": {
+        "lint": "phpcs --standard=PSR12 --exclude=Generic.Files.LineLength app/ clientes/ informes/ login/ usuarios/ gestion_soporte/"
+    },
+    "config": {
+        "optimize-autoloader": true
+    }
+}

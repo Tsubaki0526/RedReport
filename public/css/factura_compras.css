@@ -1,0 +1,113 @@
+.factura-container {
+    max-width: 800px; /* Ajusta el ancho aquí */
+    margin: 30px auto;
+    padding: 25px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    position: relative;
+}
+
+.factura-header {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+}
+
+.factura-header .empresa {
+    display: flex;
+    align-items: center;
+}
+
+.factura-header .empresa img {
+    max-height: 90px;
+    margin-right: 15px;
+}
+
+.factura-header h1 {
+    color: #007bff;
+    margin: 0;
+}
+
+.factura-section h4 {
+    color: #343a40;
+    margin-bottom: 5px;
+}
+
+.table-factura {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.table-factura th, .table-factura td {
+    padding: 8px 10px;
+    border: 1px solid #dee2e6;
+    text-align: center;
+}
+
+.table-factura th {
+    background-color: #007bff;
+    color: #fff;
+    font-weight: 600;
+}
+
+.table-factura tbody tr:nth-child(odd) {
+    background-color: #f8f9fa;
+}
+
+.table-factura tbody tr:hover {
+    background-color: #e9ecef;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.btn {
+    display: inline-block;
+    padding: 6px 15px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    border-radius: 6px;
+    text-decoration: none;
+    margin: 5px;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    background-color: #0069d9;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+}
+
+/* Reloj oculto */
+.reloj-sello {
+    display: none;
+}
+
+@media print {
+    .no-imprimir { display: none !important; }
+}

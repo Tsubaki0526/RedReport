@@ -1,0 +1,13 @@
+/* Hacer que Select2 tenga la misma altura que los inputs normales */
+.select2-container--default .select2-selection--single {
+    height: 38px; /* mismo que los inputs form-control de Bootstrap */
+    padding: 6px 12px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    line-height: 24px; /* ajusta para centrar el texto verticalmente */
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 36px; /* para alinear la flecha con el input */
+}
