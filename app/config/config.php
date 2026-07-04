@@ -19,6 +19,13 @@ if (file_exists($dotenvFile)) {
     }
 }
 
+// Fallback to getenv() for Railway / hosting env vars
+foreach (['DB_HOST','DB_NAME','DB_USER','DB_PASS','APP_URL','APP_NAME','APP_ENV','APP_DEBUG'] as $k) {
+    if (empty($_ENV[$k]) && getenv($k) !== false) {
+        $_ENV[$k] = getenv($k);
+    }
+}
+
 define('DB_HOST', $_ENV['DB_HOST'] ?? 'localhost');
 define('DB_NAME', $_ENV['DB_NAME'] ?? 'redreport');
 define('DB_USER', $_ENV['DB_USER'] ?? 'root');
