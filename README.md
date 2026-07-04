@@ -1,6 +1,6 @@
 # RedReport
 
-Sistema de gestión ISP para administración de clientes, reportes técnicos, inventario de equipos, instalaciones en campo y mapa de cobertura.
+Sistema de gestión empresarial para administración de clientes, reportes técnicos, inventario de equipos, instalaciones, facturación, ventas y mapa de cobertura.
 
 ## Requisitos
 
@@ -36,8 +36,8 @@ chmod 755 logs/ .env
 RedReport/
 ├── app/config/          # Configuración, conexión, seguridad
 ├── clientes/            # Módulo de clientes
-├── claro_azteka_dialnet_cw/  # Reportes por operador
 ├── configuracion/       # Panel de configuración (admin)
+├── facturacion/         # Facturación (PDF, pagos)
 ├── gestion_soporte/     # Gestión de soporte (rol Gestión)
 ├── informes/            # Generación de informes PDF
 ├── instalaciones/       # Instalaciones en campo
@@ -47,26 +47,30 @@ RedReport/
 ├── mapa/                # Mapa de cobertura
 ├── public/              # Assets (css/, img/, js/)
 ├── usuarios/            # Gestión de usuarios y perfil
+├── ventas/              # Ventas, planes, contratos
 ├── redreport.sql        # Esquema de base de datos
 └── .env.example         # Template de configuración
 ```
 
 ## Roles
 
-| Rol         | ID  | Acceso principal                    |
-|-------------|-----|-------------------------------------|
-| Administrador | 1  | Todo el sistema                     |
-| Gestión     | 2   | Reportes, clientes, inventario      |
-| Instalador  | 3   | Instalaciones, mapa                 |
+| Rol           | ID  | Acceso principal                         |
+|---------------|-----|------------------------------------------|
+| Administrador | 1   | Todo el sistema                          |
+| Gestión       | 2   | Reportes, clientes, inventario           |
+| Instalador    | 3   | Instalaciones, mapa                      |
+| Ventas        | 4   | Ventas, planes, contratos                |
 
 ## Funcionalidades
 
 - **Clientes**: CRUD completo, listado con DataTables, búsqueda por múltiples campos
-- **Reportes**: Registro y seguimiento por operador (Claro, Azteca, Dialnet, Liberty)
-- **Informes**: Generación de informes PDF por operador
-- **Mapa de cobertura**: Visualización Leaflet/OSM con zonas poligonales y marcadores de clientes por estado
+- **Reportes**: Registro y seguimiento de reportes técnicos
+- **Facturación**: Facturas mensuales con items dinámicos, PDF con Dompdf, pagos, anulaciones
+- **Ventas**: Dashboard con estadísticas, planes, contratos, registro de ventas y comisiones
+- **Informes**: Generación de informes PDF
+- **Mapa de cobertura**: Visualización Leaflet/OSM con zonas poligonales y marcadores
 - **Inventario**: Equipos por tipo y estado, con filtros dinámicos
-- **Instalaciones**: Asignación a instaladores, geolocalización en campo, registro de equipos instalados
+- **Instalaciones**: Asignación a instaladores, geolocalización, registro de equipos instalados
 - **Seguridad**: CSRF tokens, bloqueo por intentos fallidos (5/15min), timeout de sesión (30min), bitácora de auditoría
 - **Perfil**: Edición de datos personales y cambio de contraseña
 - **Configuración**: Panel admin para ajustar DB, SMTP, APP_URL desde interfaz web
@@ -83,4 +87,4 @@ RedReport/
 
 ## Licencia
 
-Propietaria — RedReport ISP Management System
+Propietaria — RedReport Management System
