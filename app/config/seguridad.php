@@ -19,6 +19,10 @@ function csrf_field() {
     return '<input type="hidden" name="_csrf_token" value="' . csrf_token() . '">';
 }
 
+function hescape($str) {
+    return htmlspecialchars($str, ENT_QUOTES, 'UTF-8');
+}
+
 function csrf_verify($token) {
     if (empty($_SESSION['_csrf_token']) || empty($token)) return false;
     return hash_equals($_SESSION['_csrf_token'], $token);

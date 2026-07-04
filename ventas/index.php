@@ -5,15 +5,16 @@ require_once '../app/config/conexion.php';
 
 $id_usuario = $_SESSION['id_usuario'] ?? 0;
 $id_rol = $_SESSION['id_rol'] ?? 0;
-$where = ($id_rol == 4) ? "WHERE v.id_vendedor = $id_usuario" : '';
+$sql_and = ($id_rol == 4) ? "AND v.id_vendedor = $id_usuario" : '';
+$sql_and_c = ($id_rol == 4) ? "AND c.id_vendedor = $id_usuario" : '';
 
-$ventas_mes = $pdo->query("SELECT COUNT(*) AS total, COALESCE(SUM(monto),0) AS monto FROM tb_ventas v $where AND MONTH(v.fecha) = MONTH(CURDATE()) AND YEAR(v.fecha) = YEAR(CURDATE())")->fetch(PDO::FETCH_ASSOC);
-$contratos_activos = $pdo->query("SELECT COUNT(*) AS total FROM tb_contratos c $where AND c.estado = 'activo'")->fetch(PDO::FETCH_ASSOC);
-$comision_mes = $pdo->query("SELECT COALESCE(SUM(comision),0) AS total FROM tb_ventas v $where AND MONTH(v.fecha) = MONTH(CURDATE()) AND YEAR(v.fecha) = YEAR(CURDATE())")->fetch(PDO::FETCH_ASSOC);
+$ventas_mes = $pdo->query("SELECT COUNT(*) AS total, COALESCE(SUM(monto),0) AS monto FROM tb_ventas v WHERE 1=1 $sql_and AND MONTH(v.fecha) = MONTH(CURDATE()) AND YEAR(v.fecha) = YEAR(CURDATE())")->fetch(PDO::FETCH_ASSOC);
+$contratos_activos = $pdo->query("SELECT COUNT(*) AS total FROM tb_contratos c WHERE 1=1 $sql_and_c AND c.estado = 'activo'")->fetch(PDO::FETCH_ASSOC);
+$comision_mes = $pdo->query("SELECT COALESCE(SUM(comision),0) AS total FROM tb_ventas v WHERE 1=1 $sql_and AND MONTH(v.fecha) = MONTH(CURDATE()) AND YEAR(v.fecha) = YEAR(CURDATE())")->fetch(PDO::FETCH_ASSOC);
 
 $top_planes = $pdo->query("SELECT p.nombre, COUNT(*) AS total FROM tb_contratos c INNER JOIN tb_planes p ON c.id_plan = p.id_plan GROUP BY c.id_plan ORDER BY total DESC LIMIT 5")->fetchAll(PDO::FETCH_ASSOC);
 
-$ventas_recientes = $pdo->query("SELECT v.*, c.nombre AS cliente, u.nombre AS vendedor FROM tb_ventas v INNER JOIN tb_clientes c ON v.id_cliente = c.id_cliente INNER JOIN tb_usuarios u ON v.id_vendedor = u.id_usuario $where ORDER BY v.id_venta DESC LIMIT 10")->fetchAll(PDO::FETCH_ASSOC);
+$ventas_recientes = $pdo->query("SELECT v.*, c.nombre AS cliente, u.nombre AS vendedor FROM tb_ventas v INNER JOIN tb_clientes c ON v.id_cliente = c.id_cliente INNER JOIN tb_usuarios u ON v.id_vendedor = u.id_usuario WHERE 1=1 $sql_and ORDER BY v.id_venta DESC LIMIT 10")->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <link rel="stylesheet" href="../public/css/redreport.css">
 <div class="content-wrapper">
