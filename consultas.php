@@ -13,18 +13,6 @@ $queryReportes = $pdo->prepare($sqlReportes);
 $queryReportes->execute();
 $totalReportes = $queryReportes->fetch(PDO::FETCH_ASSOC)['total'];
 
-// Consultar total de reportes Claro
-$sqlClaro = "SELECT COUNT(*) AS total FROM tb_claro";
-$queryClaro = $pdo->prepare($sqlClaro);
-$queryClaro->execute();
-$totalReportes_claro = $queryClaro->fetch(PDO::FETCH_ASSOC)['total'];
-
-// Consultar total de reportes Azteka
-$sqlAzteka = "SELECT COUNT(*) AS total FROM tb_azteka";
-$queryAzteka = $pdo->prepare($sqlAzteka);
-$queryAzteka->execute();
-$totalReportes_azteka = $queryAzteka->fetch(PDO::FETCH_ASSOC)['total'];
-
 // Obtener mes actual
 $mesActual = date('m');
 $anioActual = date('Y');

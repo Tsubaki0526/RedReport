@@ -25,7 +25,19 @@
 - Session vars: `$_SESSION['id_usuario']`, `['usuario']`, `['id_rol']`, `['ultimo_acceso']`, `['_csrf_token']`
 - `APP_URL` auto-detects protocol + host + base path — no hardcoding needed
 - `hescape($str)` shortcut for `htmlspecialchars($str, ENT_QUOTES, 'UTF-8')`
-- Chart.js for bar charts, DataTables for tables, Leaflet for maps
+- Chart.js for bar charts, DataTables for tables, Leaflet for maps, Dompdf for PDFs
+
+## Módulos
+| Módulo          | Descripción                              | Acceso              |
+|-----------------|------------------------------------------|---------------------|
+| Clientes        | CRUD, IPs, red                           | Admin, Gestión      |
+| Reportes        | Reportes generales, finalización         | Admin, Gestión      |
+| Facturación     | Facturas mensuales, PDF, pagos           | Admin, Gestión      |
+| Inventario      | Equipos (ONT, Router, etc.)              | Admin, Gestión      |
+| Instalaciones   | Asignación, geolocalización, equipos     | Admin, Instalador   |
+| Mapa            | Cobertura Leaflet/OSM, zonas             | Todos               |
+| Usuarios        | CRUD, roles, perfil                      | Admin               |
+| Configuración   | .env via UI                              | Admin               |
 
 ## Security features active
 - Session timeout: 30 min (`verificar_sesion()` in both sesion.php)
@@ -52,7 +64,8 @@
 - Coverage map module (Leaflet/OSM, zone CRUD, admin panel)
 - Equipment inventory module (CRUD, filtering by type/state)
 - Installations module (assignment, geolocation, equipment registration)
-- Dialnet + Liberty report modules (24 files)
+- Billing module (create invoice, items, auto-number, PDF, mark paid/void, dashboard stats)
+- Removed ISP-specific modules (Claro, Azteka, Dialnet, Liberty)
 - Security system (CSRF, lockout, bitácora, session timeout, XSS fixes)
 - Profile module (edit profile, change password)
 - Settings module (admin panel, writes .env)
@@ -66,3 +79,4 @@
 - Add photo upload for equipment in `realizar.php`
 - Equipment de-assignment / return-to-stock flow
 - Test all modules on fresh install
+- Send invoice by email from PDF module

@@ -4,8 +4,10 @@ include('parte1.php');
 include('consultas.php');
 
 // Additional stats
-$dialnet = $pdo->query("SELECT COUNT(*) AS total FROM tb_dialnet")->fetch(PDO::FETCH_ASSOC)['total'];
-$liberty = $pdo->query("SELECT COUNT(*) AS total FROM tb_liberty")->fetch(PDO::FETCH_ASSOC)['total'];
+$facturacion_pendiente = $pdo->query("SELECT COUNT(*) AS total FROM tb_facturas WHERE estado = 'pendiente'")->fetch(PDO::FETCH_ASSOC)['total'];
+$facturacion_pagada = $pdo->query("SELECT COUNT(*) AS total FROM tb_facturas WHERE estado = 'pagada'")->fetch(PDO::FETCH_ASSOC)['total'];
+$facturacion_vencida = $pdo->query("SELECT COUNT(*) AS total FROM tb_facturas WHERE estado = 'vencida'")->fetch(PDO::FETCH_ASSOC)['total'];
+$ingresos_mes = $pdo->query("SELECT COALESCE(SUM(total), 0) AS total FROM tb_facturas WHERE estado = 'pagada' AND MONTH(fecha_pago) = MONTH(CURDATE()) AND YEAR(fecha_pago) = YEAR(CURDATE())")->fetch(PDO::FETCH_ASSOC)['total'];
 $instalaciones_pendientes = $pdo->query("SELECT COUNT(*) AS total FROM tb_clientes WHERE fecha_instalacion IS NULL")->fetch(PDO::FETCH_ASSOC)['total'];
 $instalaciones_completadas = $pdo->query("SELECT COUNT(*) AS total FROM tb_clientes WHERE fecha_instalacion IS NOT NULL")->fetch(PDO::FETCH_ASSOC)['total'];
 ?>
@@ -35,7 +37,7 @@ $instalaciones_completadas = $pdo->query("SELECT COUNT(*) AS total FROM tb_clien
               </div>
               <div>
                 <h5 class="mb-0 fw-bold">Bienvenido de nuevo, <?= htmlspecialchars($_SESSION['usuario'] ?? 'Usuario') ?></h5>
-                <p class="text-muted mb-0 small">Sistema de gestion ISP — RedReport v2.0</p>
+                <p class="text-muted mb-0 small">Sistema de gestion empresarial — RedReport v2.0</p>
               </div>
             </div>
           </div>
@@ -58,7 +60,7 @@ $instalaciones_completadas = $pdo->query("SELECT COUNT(*) AS total FROM tb_clien
           <div class="stat-card green">
             <div class="stat-icon"><i class="fas fa-file-alt"></i></div>
             <div>
-              <div class="stat-value"><?= $totalReportes + $totalReportes_claro + $totalReportes_azteka + $dialnet + $liberty ?></div>
+              <div class="stat-value"><?= $totalReportes ?></div>
               <div class="stat-label">Total reportes</div>
             </div>
             <a href="informes/vistas/informe_reportes_2.php" class="stat-link">Ver informes <i class="fas fa-arrow-right"></i></a>
@@ -86,46 +88,46 @@ $instalaciones_completadas = $pdo->query("SELECT COUNT(*) AS total FROM tb_clien
         </div>
       </div>
 
-      <!-- Second row: report breakdown -->
+      <!-- Second row: billing stats -->
       <div class="row">
         <div class="col-lg-3 col-md-6">
           <div class="stat-card purple">
-            <div class="stat-icon"><i class="fas fa-bolt"></i></div>
+            <div class="stat-icon"><i class="fas fa-clock"></i></div>
             <div>
-              <div class="stat-value"><?= $totalReportes_claro ?></div>
-              <div class="stat-label">Reportes Claro</div>
+              <div class="stat-value"><?= $facturacion_pendiente ?></div>
+              <div class="stat-label">Facturas pendientes</div>
             </div>
-            <a href="informes/vistas/informe_claro_2.php" class="stat-link">Ver <i class="fas fa-arrow-right"></i></a>
+            <a href="facturacion/index.php" class="stat-link">Ver <i class="fas fa-arrow-right"></i></a>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+          <div class="stat-card green">
+            <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+            <div>
+              <div class="stat-value"><?= $facturacion_pagada ?></div>
+              <div class="stat-label">Facturas pagadas</div>
+            </div>
+            <a href="facturacion/index.php" class="stat-link">Ver <i class="fas fa-arrow-right"></i></a>
           </div>
         </div>
         <div class="col-lg-3 col-md-6">
           <div class="stat-card red">
-            <div class="stat-icon"><i class="fas fa-satellite-dish"></i></div>
+            <div class="stat-icon"><i class="fas fa-exclamation-triangle"></i></div>
             <div>
-              <div class="stat-value"><?= $totalReportes_azteka ?></div>
-              <div class="stat-label">Reportes Azteca</div>
+              <div class="stat-value"><?= $facturacion_vencida ?></div>
+              <div class="stat-label">Facturas vencidas</div>
             </div>
-            <a href="informes/vistas/informe_azteca_2.php" class="stat-link">Ver <i class="fas fa-arrow-right"></i></a>
+            <a href="facturacion/index.php" class="stat-link">Ver <i class="fas fa-arrow-right"></i></a>
           </div>
         </div>
         <div class="col-lg-3 col-md-6">
-          <div class="stat-card pink">
-            <div class="stat-icon"><i class="fas fa-globe"></i></div>
+          <div class="stat-card teal">
+            <div class="stat-icon"><i class="fas fa-dollar-sign"></i></div>
             <div>
-              <div class="stat-value"><?= $dialnet ?></div>
-              <div class="stat-label">Reportes Dialnet</div>
+              <div class="stat-value">$<?= number_format($ingresos_mes, 0) ?></div>
+              <div class="stat-label">Ingresos del mes</div>
             </div>
-            <a href="informes/vistas/informe_dialnet_2.php" class="stat-link">Ver <i class="fas fa-arrow-right"></i></a>
-          </div>
-        </div>
-        <div class="col-lg-3 col-md-6">
-          <div class="stat-card indigo">
-            <div class="stat-icon"><i class="fas fa-network-wired"></i></div>
-            <div>
-              <div class="stat-value"><?= $liberty ?></div>
-              <div class="stat-label">Reportes Liberty</div>
-            </div>
-            <a href="informes/vistas/informe_liberty_2.php" class="stat-link">Ver <i class="fas fa-arrow-right"></i></a>
+            <a href="facturacion/index.php" class="stat-link">Ver <i class="fas fa-arrow-right"></i></a>
           </div>
         </div>
       </div>

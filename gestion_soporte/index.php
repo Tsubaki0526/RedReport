@@ -31,7 +31,7 @@ $instalaciones_completadas = $pdo->query("SELECT COUNT(*) AS total FROM tb_clien
               </div>
               <div>
                 <h5 class="mb-0 fw-bold">Bienvenido de nuevo, <?= htmlspecialchars($_SESSION['usuario'] ?? 'Usuario') ?></h5>
-                <p class="text-muted mb-0 small">Sistema de gestion ISP — RedReport v2.0</p>
+                <p class="text-muted mb-0 small">Sistema de gestion empresarial — RedReport v2.0</p>
               </div>
             </div>
           </div>
@@ -41,34 +41,55 @@ $instalaciones_completadas = $pdo->query("SELECT COUNT(*) AS total FROM tb_clien
       <div class="row">
         <div class="col-lg-3 col-md-6">
           <div class="stat-card blue">
-            <div class="stat-icon"><i class="fas fa-bolt"></i></div>
+            <div class="stat-icon"><i class="fas fa-users"></i></div>
             <div>
-              <div class="stat-value"><?= $totalReportes_claro ?></div>
-              <div class="stat-label">Reportes Claro</div>
+              <div class="stat-value"><?= $totalClientes ?></div>
+              <div class="stat-label">Clientes registrados</div>
             </div>
-            <a href="../informes/vistas/informe_claro.php" class="stat-link">Ver <i class="fas fa-arrow-right"></i></a>
+            <a href="../clientes/vistas/lista.php" class="stat-link">Ver <i class="fas fa-arrow-right"></i></a>
           </div>
         </div>
         <div class="col-lg-3 col-md-6">
-          <div class="stat-card red">
-            <div class="stat-icon"><i class="fas fa-satellite-dish"></i></div>
+          <div class="stat-card purple">
+            <div class="stat-icon"><i class="fas fa-clock"></i></div>
             <div>
-              <div class="stat-value"><?= $totalReportes_azteka ?></div>
-              <div class="stat-label">Reportes Azteca</div>
+              <div class="stat-value"><?= $pdo->query("SELECT COUNT(*) AS total FROM tb_facturas WHERE estado = 'pendiente'")->fetch(PDO::FETCH_ASSOC)['total'] ?></div>
+              <div class="stat-label">Facturas pendientes</div>
             </div>
-            <a href="../informes/vistas/informe_azteca.php" class="stat-link">Ver <i class="fas fa-arrow-right"></i></a>
+            <a href="../facturacion/index.php" class="stat-link">Ver <i class="fas fa-arrow-right"></i></a>
           </div>
         </div>
         <div class="col-lg-3 col-md-6">
           <div class="stat-card green">
-            <div class="stat-icon"><i class="fas fa-file-alt"></i></div>
+            <div class="stat-icon"><i class="fas fa-file-invoice"></i></div>
             <div>
               <div class="stat-value"><?= $totalReportes ?></div>
-              <div class="stat-label">Informe de reportes</div>
+              <div class="stat-label">Total reportes</div>
             </div>
             <a href="../informes/vistas/informe_reportes.php" class="stat-link">Ver <i class="fas fa-arrow-right"></i></a>
           </div>
         </div>
+        <div class="col-lg-3 col-md-6">
+          <div class="stat-card orange">
+            <div class="stat-icon"><i class="fas fa-wrench"></i></div>
+            <div>
+              <div class="stat-value"><?= $instalaciones_pendientes ?></div>
+              <div class="stat-label">Instalaciones pendientes</div>
+            </div>
+            <a href="../instalaciones/index.php" class="stat-link">Ver <i class="fas fa-arrow-right"></i></a>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+          <div class="stat-card teal">
+            <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+            <div>
+              <div class="stat-value"><?= $instalaciones_completadas ?></div>
+              <div class="stat-label">Instalaciones completadas</div>
+            </div>
+            <a href="../instalaciones/index.php" class="stat-link">Ver <i class="fas fa-arrow-right"></i></a>
+          </div>
+        </div>
+      </div>
         <div class="col-lg-3 col-md-6">
           <div class="stat-card orange">
             <div class="stat-icon"><i class="fas fa-wrench"></i></div>

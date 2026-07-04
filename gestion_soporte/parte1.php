@@ -70,71 +70,22 @@ $url = APP_URL;
             </ul>
           </li>
 
+          <!-- Facturacion -->
           <li class="nav-item">
-            <a href="#" class="nav-link active" data-bs-toggle="collapse" data-bs-target="#menuClaroG" aria-expanded="false">
-              <i class="fas fa-file-alt nav-icon"></i>
-              <span>Reportes C/A/D/L</span>
+            <a href="#" class="nav-link active" data-bs-toggle="collapse" data-bs-target="#menuFacturacionG" aria-expanded="false">
+              <i class="fas fa-file-invoice nav-icon"></i>
+              <span>Facturacion</span>
               <i class="fas fa-angle-right right ms-auto"></i>
             </a>
-            <ul class="nav nav-treeview collapse" id="menuClaroG">
+            <ul class="nav nav-treeview collapse" id="menuFacturacionG">
               <li class="nav-item">
-                <a href="<?= $url ?>claro_azteka_dialnet_cw/vistas/lista_claro.php" class="nav-link">
-                  <i class="fas fa-list"></i> Listado Claro
+                <a href="<?= $url ?>facturacion/index.php" class="nav-link">
+                  <i class="fas fa-list"></i> Listado de Facturas
                 </a>
               </li>
               <li class="nav-item">
-                <a href="<?= $url ?>claro_azteka_dialnet_cw/vistas_azteka/lista_azteka.php" class="nav-link">
-                  <i class="fas fa-list"></i> Listado Azteca
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="<?= $url ?>claro_azteka_dialnet_cw/vistas_dialnet/lista_dialnet.php" class="nav-link">
-                  <i class="fas fa-list"></i> Listado Dialnet
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="<?= $url ?>claro_azteka_dialnet_cw/vistas_liberty/lista_liberty.php" class="nav-link">
-                  <i class="fas fa-list"></i> Listado Liberty
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="<?= $url ?>claro_azteka_dialnet_cw/vistas/registrar_daño.php" class="nav-link">
-                  <i class="fas fa-user-plus"></i> Registro De Reportes
-                </a>
-              </li>
-            </ul>
-          </li>
-
-          <li class="nav-item">
-            <a href="#" class="nav-link active" data-bs-toggle="collapse" data-bs-target="#menuInformesG" aria-expanded="false">
-              <i class="fas fa-file-alt nav-icon"></i>
-              <span>Informes</span>
-              <i class="fas fa-angle-right right ms-auto"></i>
-            </a>
-            <ul class="nav nav-treeview collapse" id="menuInformesG">
-              <li class="nav-item">
-                <a href="<?= $url ?>informes/vistas/informe_reportes.php" class="nav-link">
-                  <i class="fas fa-list"></i> Listado De Informes
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="<?= $url ?>informes/vistas/informe_claro.php" class="nav-link">
-                  <i class="fas fa-list"></i> Informes Claro
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="<?= $url ?>informes/vistas/informe_azteca.php" class="nav-link">
-                  <i class="fas fa-list"></i> Informes Azteca
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="<?= $url ?>informes/vistas/informe_dialnet.php" class="nav-link">
-                  <i class="fas fa-list"></i> Informes Dialnet
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="<?= $url ?>informes/vistas/informe_liberty.php" class="nav-link">
-                  <i class="fas fa-list"></i> Informes Liberty
+                <a href="<?= $url ?>facturacion/crear.php" class="nav-link">
+                  <i class="fas fa-plus"></i> Crear Factura
                 </a>
               </li>
             </ul>
