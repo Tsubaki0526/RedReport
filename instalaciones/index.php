@@ -132,7 +132,7 @@ if ($es_admin) {
 
 <?php include('../parte2.php'); ?>
 <script>
-$(function(){$('#tablaInst').DataTable({responsive:true,autoWidth:false,language:{url:'//cdn.datatables.net/plug-ins/1.13.11/i18n/es-ES.json'},columnDefs:[{orderable:false,targets:-1}]});});
+$(function(){$('#tablaInst').DataTable({responsive:true,autoWidth:false,language:{url:'//cdn.datatables.net/plug-ins/1.13.11/i18n/es-ES.json'},columnDefs:[{orderable:false,targets:6}]});});
 <?php if ($es_admin): ?>
 var modal = document.getElementById('asignarModal');
 modal.addEventListener('show.bs.modal', function(e) {

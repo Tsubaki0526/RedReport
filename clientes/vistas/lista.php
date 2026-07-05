@@ -200,11 +200,11 @@ include('../controles/lista_clientes_controles.php');
             autoWidth: false,
             language: { url: '//cdn.datatables.net/plug-ins/1.13.11/i18n/es-ES.json' },
             columnDefs: [{
-                    targets: -1,
+                    targets: 7,
                     visible: false
                 }, // ocultar columna detalles
                 {
-                    targets: -2,
+                    targets: 6,
                     responsivePriority: 1,
                     className: 'all'
                 } // Acciones siempre visible

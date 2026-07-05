@@ -20,7 +20,7 @@ $dispositivos = $pdo->query("SELECT d.*, c.nombre AS cliente_nombre FROM tb_disp
             <div class="card-body p-0">
                 <div class="table-container">
                 <table class="table table-sm mb-0" id="tablaMonitoreo">
-                    <thead><tr><th>IP</th><th>Nombre</th><th>Cliente</th><th>Tipo</th><th>Estado</th><th>Señal</th><th>Último check</th><th></th></tr></thead>
+                    <thead><tr><th>IP</th><th>Nombre</th><th>Cliente</th><th>Tipo</th><th>Estado</th><th>Señal</th><th>Último check</th><th>Acciones</th></tr></thead>
                     <tbody>
                         <?php foreach ($dispositivos as $d): ?>
                         <tr id="row-<?= $d['id_dispositivo'] ?>">
@@ -40,7 +40,7 @@ $dispositivos = $pdo->query("SELECT d.*, c.nombre AS cliente_nombre FROM tb_disp
                                 </div>
                                 <?php else: ?>-<?php endif; ?>
                             </td>
-                            <td id="fecha-<?= $d['id_dispositivo'] ?>"><?= $d['ultimo_check'] ? date('d/m/Y H:i', strtotime($d['ultimo_check'])) : '-' ?></td>
+                            <td id="fecha-<?= $d['id_dispositivo'] ?>"><?= (!empty($d['ultimo_check']) && $d['ultimo_check'] != '0000-00-00 00:00:00') ? date('d/m/Y H:i', strtotime($d['ultimo_check'])) : '-' ?></td>
                             <td class="text-end">
                                 <button class="btn btn-sm btn-outline-primary escanear-btn" data-id="<?= $d['id_dispositivo'] ?>" data-ip="<?= hescape($d['ip']) ?>"><i class="fas fa-sync"></i></button>
                                 <a href="javascript:void(0)" onclick="eliminar(<?= $d['id_dispositivo'] ?>)" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></a>
