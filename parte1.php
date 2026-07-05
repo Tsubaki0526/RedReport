@@ -20,15 +20,17 @@ if ($currentModule === '' || $currentModule === 'index.php') {
 $directModules = ['ordenes', 'tickets', 'informes', 'monitoreo'];
 // Módulos con submenú
 $collapseModules = [
-    'usuarios'      => 'menuUsuarios',
     'clientes'      => 'menuClientes',
     'ventas'        => 'menuVentas',
     'facturacion'   => 'menuFacturacion',
-    'mapa'          => 'menuMapa',
-    'inventario'    => 'menuInventario',
     'instalaciones' => 'menuInstalaciones',
+    'inventario'    => 'menuInventario',
+    'mapa'          => 'menuMapa',
+    'usuarios'      => 'menuUsuarios',
+    'auditoria'     => 'menuUsuarios',
     'configuracion' => 'menuConfig',
     'backup'        => 'menuConfig',
+    'api'           => 'menuConfig',
 ];
 $activeCollapse = '';
 foreach ($collapseModules as $prefix => $menuId) {
@@ -112,27 +114,6 @@ function navActive($prefix) {
       <!-- Menu -->
       <nav class="mt-2">
         <ul class="nav nav-sidebar flex-column">
-
-          <!-- Usuarios -->
-          <li class="nav-item">
-            <a href="#" class="nav-link <?= navActive('usuarios') ?>" data-bs-toggle="collapse" data-bs-target="#menuUsuarios" aria-expanded="<?= isAriaExpanded('menuUsuarios') ?>">
-              <i class="fas fa-users nav-icon"></i>
-              <span>Usuarios Y Seguridad</span>
-              <i class="fas fa-angle-right right ms-auto"></i>
-            </a>
-            <ul class="nav nav-treeview collapse <?= isCollapseShow('menuUsuarios') ?>" id="menuUsuarios">
-              <li class="nav-item">
-                <a href="<?= $url ?>usuarios/lista.php" class="nav-link">
-                  <i class="fas fa-list"></i> Listado De Usuarios
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="<?= $url ?>usuarios/crear.php" class="nav-link">
-                  <i class="fas fa-user-plus"></i> Registro De Usuarios
-                </a>
-              </li>
-            </ul>
-          </li>
 
           <!-- Clientes -->
           <li class="nav-item">
@@ -224,36 +205,39 @@ function navActive($prefix) {
             </ul>
           </li>
 
-          <!-- Mapa de Cobertura -->
+          <!-- Ordenes de servicio -->
           <li class="nav-item">
-            <a href="#" class="nav-link <?= navActive('mapa') ?>" data-bs-toggle="collapse" data-bs-target="#menuMapa" aria-expanded="<?= isAriaExpanded('menuMapa') ?>">
-              <i class="fas fa-map-marked-alt nav-icon"></i>
-              <span>Mapa de Cobertura</span>
-              <i class="fas fa-angle-right right ms-auto"></i>
-            </a>
-            <ul class="nav nav-treeview collapse <?= isCollapseShow('menuMapa') ?>" id="menuMapa">
-              <li class="nav-item">
-                <a href="<?= $url ?>mapa/index.php" class="nav-link">
-                  <i class="fas fa-map"></i> Ver Mapa
-                </a>
-              </li>
-          <!-- Auditoria -->
-          <li class="nav-item">
-            <a href="<?= $url ?>auditoria/index.php" class="nav-link <?= isActive('auditoria') ?>">
-              <i class="fas fa-history nav-icon"></i>
-              <span>Auditoría</span>
+            <a href="<?= $url ?>ordenes/index.php" class="nav-link <?= isActive('ordenes') ?>">
+              <i class="fas fa-clipboard nav-icon"></i>
+              <span>Ordenes de servicio</span>
             </a>
           </li>
 
-          <?php if ($id_rol == 1): ?>
+          <!-- Tickets de soporte -->
+          <li class="nav-item">
+            <a href="<?= $url ?>tickets/index.php" class="nav-link <?= isActive('tickets') ?>">
+              <i class="fas fa-headset nav-icon"></i>
+              <span>Tickets de soporte</span>
+            </a>
+          </li>
+
+          <?php if ($id_rol != 2): ?>
+          <!-- Instalaciones -->
+          <li class="nav-item">
+            <a href="#" class="nav-link <?= navActive('instalaciones') ?>" data-bs-toggle="collapse" data-bs-target="#menuInstalaciones" aria-expanded="<?= isAriaExpanded('menuInstalaciones') ?>">
+              <i class="fas fa-hard-hat nav-icon"></i>
+              <span>Instalaciones</span>
+              <i class="fas fa-angle-right right ms-auto"></i>
+            </a>
+            <ul class="nav nav-treeview collapse <?= isCollapseShow('menuInstalaciones') ?>" id="menuInstalaciones">
               <li class="nav-item">
-                <a href="<?= $url ?>mapa/admin.php" class="nav-link">
-                  <i class="fas fa-cog"></i> Administrar Zonas
+                <a href="<?= $url ?>instalaciones/index.php" class="nav-link">
+                  <i class="fas fa-list"></i> Gestionar Instalaciones
                 </a>
               </li>
-              <?php endif; ?>
             </ul>
           </li>
+          <?php endif; ?>
 
           <?php if ($id_rol != 3): ?>
           <!-- Inventario -->
@@ -278,37 +262,34 @@ function navActive($prefix) {
           </li>
           <?php endif; ?>
 
-          <?php if ($id_rol != 2): ?>
-          <!-- Instalaciones -->
+          <!-- Mapa de Cobertura -->
           <li class="nav-item">
-            <a href="#" class="nav-link <?= navActive('instalaciones') ?>" data-bs-toggle="collapse" data-bs-target="#menuInstalaciones" aria-expanded="<?= isAriaExpanded('menuInstalaciones') ?>">
-              <i class="fas fa-hard-hat nav-icon"></i>
-              <span>Instalaciones</span>
+            <a href="#" class="nav-link <?= navActive('mapa') ?>" data-bs-toggle="collapse" data-bs-target="#menuMapa" aria-expanded="<?= isAriaExpanded('menuMapa') ?>">
+              <i class="fas fa-map-marked-alt nav-icon"></i>
+              <span>Mapa de Cobertura</span>
               <i class="fas fa-angle-right right ms-auto"></i>
             </a>
-            <ul class="nav nav-treeview collapse <?= isCollapseShow('menuInstalaciones') ?>" id="menuInstalaciones">
+            <ul class="nav nav-treeview collapse <?= isCollapseShow('menuMapa') ?>" id="menuMapa">
               <li class="nav-item">
-                <a href="<?= $url ?>instalaciones/index.php" class="nav-link">
-                  <i class="fas fa-list"></i> Gestionar Instalaciones
+                <a href="<?= $url ?>mapa/index.php" class="nav-link">
+                  <i class="fas fa-map"></i> Ver Mapa
                 </a>
               </li>
+              <?php if ($id_rol == 1): ?>
+              <li class="nav-item">
+                <a href="<?= $url ?>mapa/admin.php" class="nav-link">
+                  <i class="fas fa-cog"></i> Administrar Zonas
+                </a>
+              </li>
+              <?php endif; ?>
             </ul>
           </li>
-          <?php endif; ?>
 
-          <!-- Ordenes de servicio -->
+          <!-- Monitoreo SNMP -->
           <li class="nav-item">
-            <a href="<?= $url ?>ordenes/index.php" class="nav-link <?= isActive('ordenes') ?>">
-              <i class="fas fa-clipboard nav-icon"></i>
-              <span>Ordenes de servicio</span>
-            </a>
-          </li>
-
-          <!-- Tickets de soporte -->
-          <li class="nav-item">
-            <a href="<?= $url ?>tickets/index.php" class="nav-link <?= isActive('tickets') ?>">
-              <i class="fas fa-headset nav-icon"></i>
-              <span>Tickets de soporte</span>
+            <a href="<?= $url ?>monitoreo/index.php" class="nav-link <?= isActive('monitoreo') ?>">
+              <i class="fas fa-network-wired nav-icon"></i>
+              <span>Monitoreo SNMP</span>
             </a>
           </li>
 
@@ -320,12 +301,32 @@ function navActive($prefix) {
             </a>
           </li>
 
-          <!-- Monitoreo SNMP -->
+          <li class="nav-item"><hr class="sidebar-divider"></li>
+
+          <!-- Usuarios y Seguridad -->
           <li class="nav-item">
-            <a href="<?= $url ?>monitoreo/index.php" class="nav-link <?= isActive('monitoreo') ?>">
-              <i class="fas fa-network-wired nav-icon"></i>
-              <span>Monitoreo SNMP</span>
+            <a href="#" class="nav-link <?= navActive('usuarios') ?>" data-bs-toggle="collapse" data-bs-target="#menuUsuarios" aria-expanded="<?= isAriaExpanded('menuUsuarios') ?>">
+              <i class="fas fa-shield-alt nav-icon"></i>
+              <span>Usuarios y Seguridad</span>
+              <i class="fas fa-angle-right right ms-auto"></i>
             </a>
+            <ul class="nav nav-treeview collapse <?= isCollapseShow('menuUsuarios') ?>" id="menuUsuarios">
+              <li class="nav-item">
+                <a href="<?= $url ?>usuarios/lista.php" class="nav-link">
+                  <i class="fas fa-list"></i> Listado De Usuarios
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="<?= $url ?>usuarios/crear.php" class="nav-link">
+                  <i class="fas fa-user-plus"></i> Registro De Usuarios
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="<?= $url ?>auditoria/index.php" class="nav-link">
+                  <i class="fas fa-history"></i> Auditoría
+                </a>
+              </li>
+            </ul>
           </li>
 
           <?php if ($id_rol == 1): ?>
@@ -363,6 +364,11 @@ function navActive($prefix) {
                 </a>
               </li>
               <li class="nav-item">
+                <a href="<?= $url ?>configuracion/cola_email.php" class="nav-link">
+                  <i class="fas fa-envelope-open-text"></i> Cola de Correos
+                </a>
+              </li>
+              <li class="nav-item">
                 <a href="<?= $url ?>configuracion/health.php" class="nav-link">
                   <i class="fas fa-heartbeat"></i> Health Dashboard
                 </a>
@@ -375,11 +381,6 @@ function navActive($prefix) {
               <li class="nav-item">
                 <a href="<?= $url ?>configuracion/logs.php" class="nav-link">
                   <i class="fas fa-exclamation-triangle"></i> Visor de Logs
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="<?= $url ?>configuracion/cola_email.php" class="nav-link">
-                  <i class="fas fa-envelope-open-text"></i> Cola de Correos
                 </a>
               </li>
               <li class="nav-item">
