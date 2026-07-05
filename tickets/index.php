@@ -40,9 +40,8 @@ $prioridades = ['Baja' => 'success', 'Media' => 'warning', 'Alta' => 'danger', '
                             <?php endif; ?>
                         </td>
                     </tr>
-                    <?php endforeach; ?>
-                    <?php if (empty($tickets)): ?><tr><td colspan="9" class="text-center text-muted">No hay tickets registrados</td></tr><?php endif; ?>
-                </tbody>
+                        <?php endforeach; ?>
+                    </tbody>
             </table>
             </div>
         </div></div>
@@ -117,9 +116,13 @@ $prioridades = ['Baja' => 'success', 'Media' => 'warning', 'Alta' => 'danger', '
     <div class="modal-body" id="detalleTicketBody">Cargando...</div>
 </div></div></div>
 
+<?php include('../parte2.php'); ?>
 <script>
 $('#tablaTickets').DataTable({
-    language: { url: '//cdn.datatables.net/plug-ins/1.13.11/i18n/es-ES.json' },
+    language: {
+        url: '//cdn.datatables.net/plug-ins/1.13.11/i18n/es-ES.json',
+        emptyTable: 'No hay tickets registrados'
+    },
     order: [[0, 'desc']],
     pageLength: 25,
     responsive: true,
@@ -148,4 +151,3 @@ $(document).on('click', '.btn-resolver-ticket', function() {
     });
 });
 </script>
-<?php include('../parte2.php'); ?>

@@ -47,7 +47,6 @@ $dispositivos = $pdo->query("SELECT d.*, c.nombre AS cliente_nombre FROM tb_disp
                             </td>
                         </tr>
                         <?php endforeach; ?>
-                        <?php if (empty($dispositivos)): ?><tr><td colspan="8" class="text-center text-muted py-3">Sin dispositivos registrados</td></tr><?php endif; ?>
                     </tbody>
                 </table>
                 </div>
@@ -88,6 +87,10 @@ $(function() {
         order: [[0, 'asc']],
         pageLength: 25,
         autoWidth: false,
+        language: {
+            url: '//cdn.datatables.net/plug-ins/1.13.10/i18n/es-ES.json',
+            emptyTable: 'Sin dispositivos registrados'
+        },
         columns: [
             null, null, null, null,
             null, null, null, { orderable: false }

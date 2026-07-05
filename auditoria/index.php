@@ -60,7 +60,6 @@ $registros = $stmt->fetchAll();
             <td class="text-nowrap"><code><?=hescape($r['direccion_ip'])?></code></td>
           </tr>
           <?php endforeach; ?>
-          <?php if (empty($registros)): ?><tr><td colspan="7" class="text-center text-muted py-3">Sin registros</td></tr><?php endif; ?>
         </tbody>
       </table>
       </div>
@@ -70,7 +69,10 @@ $registros = $stmt->fetchAll();
 <?php include __DIR__ . '/../parte2.php'; ?>
 <script>
 $('#tablaAuditoria').DataTable({
-    language: { url: '//cdn.datatables.net/plug-ins/1.13.11/i18n/es-ES.json' },
+    language: {
+        url: '//cdn.datatables.net/plug-ins/1.13.11/i18n/es-ES.json',
+        emptyTable: 'Sin registros en la bitácora'
+    },
     order: [[0, 'desc']],
     pageLength: 25,
     responsive: true,

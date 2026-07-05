@@ -112,15 +112,19 @@ $status = $pdo->query("
 
     </div>
 </div>
+<?php include('../parte2.php'); ?>
 <script>
 $(document).ready(function() {
     const table = $('#tablaCola').DataTable({
         responsive: true,
         order: [[0, 'desc']],
         pageLength: 25,
-        language: { url: '//cdn.datatables.net/plug-ins/1.13.11/i18n/es-ES.json' },
         dom: 'Bfrtip',
-        buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
+        buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],
+        language: {
+            url: '//cdn.datatables.net/plug-ins/1.13.11/i18n/es-ES.json',
+            emptyTable: 'No hay correos en la cola'
+        }
     });
 
     function processQueue() {
@@ -186,4 +190,3 @@ $(document).ready(function() {
     });
 });
 </script>
-<?php include('../parte2.php'); ?>

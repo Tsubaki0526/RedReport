@@ -40,9 +40,8 @@ $prioridades = ['Baja' => 'success', 'Media' => 'warning', 'Alta' => 'danger', '
                             <?php endif; ?>
                         </td>
                     </tr>
-                    <?php endforeach; ?>
-                    <?php if (empty($ordenes)): ?><tr><td colspan="8" class="text-center text-muted">No hay ordenes registradas</td></tr><?php endif; ?>
-                </tbody>
+                        <?php endforeach; ?>
+                    </tbody>
             </table>
             </div>
         </div></div>
@@ -112,9 +111,13 @@ $prioridades = ['Baja' => 'success', 'Media' => 'warning', 'Alta' => 'danger', '
     <div class="modal-body" id="detalleOrdenBody">Cargando...</div>
 </div></div></div>
 
+<?php include('../parte2.php'); ?>
 <script>
 $('#tablaOrdenes').DataTable({
-    language: { url: '//cdn.datatables.net/plug-ins/1.13.11/i18n/es-ES.json' },
+    language: {
+        url: '//cdn.datatables.net/plug-ins/1.13.11/i18n/es-ES.json',
+        emptyTable: 'No hay órdenes registradas'
+    },
     order: [[0, 'desc']],
     pageLength: 25,
     responsive: true,
@@ -143,4 +146,3 @@ $(document).on('click', '.btn-cancelar-orden', function() {
     });
 });
 </script>
-<?php include('../parte2.php'); ?>
