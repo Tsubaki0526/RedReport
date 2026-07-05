@@ -40,6 +40,7 @@ include('../controles/lista_clientes_controles.php');
                             <span><i class="fas fa-trash text-danger"></i> Borrar</span>
                         </div>
                         <!-- Tabla principal -->
+                        <div class="table-container">
                         <table id="example1" class="table table-bordered table-striped table-sm">
                             <thead>
                                 <tr>
@@ -48,6 +49,7 @@ include('../controles/lista_clientes_controles.php');
                                     <th>Celular</th>
                                     <th>Dirección</th>
                                     <th>Email</th>
+                                    <th>Estado</th>
                                     <th>Acciones</th>
                                     <th style="display:none;">Detalles</th>
                                 </tr>
@@ -60,11 +62,15 @@ include('../controles/lista_clientes_controles.php');
                                         <td><?= htmlspecialchars($cliente['telefono']) ?></td>
                                         <td><?= htmlspecialchars($cliente['direccion']) ?></td>
                                         <td><?= htmlspecialchars($cliente['email']) ?></td>
+                                        <td><span class="badge bg-<?= $cliente['estado_servicio'] == 'Activo' ? 'success' : ($cliente['estado_servicio'] == 'Suspendido' ? 'warning text-dark' : 'danger') ?>"><?= $cliente['estado_servicio'] ?></span></td>
                                         <td>
                                             <div class="d-flex flex-wrap gap-1">
                                                 <button class="btn btn-info btn-sm btn-ver-detalle" title="Ver más">
                                                     <i class="fas fa-eye"></i>
                                                 </button>
+                                                <a href="ficha.php?id=<?= $cliente['id_cliente'] ?>" class="btn btn-secondary btn-sm" title="Ficha completa">
+                                                    <i class="fas fa-address-card"></i>
+                                                </a>
                                                 <a href="../vistas/ips_clientes.php?id_cliente=<?= $cliente['id_cliente'] ?>" class="btn btn-success btn-sm" title="IPs">
                                                     <i class="fas fa-network-wired"></i>
                                                 </a>

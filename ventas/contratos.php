@@ -58,6 +58,7 @@ $contratos = $pdo->query("SELECT c.*, cl.nombre AS cliente, p.nombre AS plan, u.
                                     <td><?= $c['fecha_fin'] ? date('d/m/Y', strtotime($c['fecha_fin'])) : '-' ?></td>
                                     <td><span class="badge <?= $badge ?>"><?= ucfirst($c['estado']) ?></span></td>
                                     <td>
+                                        <a href="pdf_contrato.php?id=<?= $c['id_contrato'] ?>" class="btn btn-sm btn-outline-danger" target="_blank" title="PDF contrato"><i class="fas fa-file-pdf"></i></a>
                                         <a href="ventas.php?contrato=<?= $c['id_contrato'] ?>" class="btn btn-sm btn-success" title="Registrar venta"><i class="fas fa-cart-plus"></i></a>
                                         <?php if ($c['estado'] == 'activo'): ?>
                                         <form method="POST" action="controles/cancelar_contrato.php" class="d-inline" onsubmit="return confirm('Cancelar este contrato?')">

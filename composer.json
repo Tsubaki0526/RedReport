@@ -17,7 +17,7 @@
         "squizlabs/php_codesniffer": "^3.7"
     },
     "scripts": {
-        "lint": "phpcs --standard=PSR12 --exclude=Generic.Files.LineLength app/ clientes/ informes/ login/ usuarios/ gestion_soporte/"
+        "lint": "phpcs --standard=PSR12 --exclude=Generic.Files.LineLength app/ clientes/ login/ usuarios/"
     },
     "config": {
         "optimize-autoloader": true

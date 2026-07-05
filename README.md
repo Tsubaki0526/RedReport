@@ -1,6 +1,6 @@
 # RedReport
 
-Sistema de gestión empresarial para administración de clientes, reportes técnicos, inventario de equipos, instalaciones, facturación, ventas y mapa de cobertura.
+Sistema de gestión empresarial para administración de clientes, inventario, instalaciones, facturación, ventas, órdenes de servicio, tickets de soporte y mapa de cobertura.
 
 ## Requisitos
 
@@ -38,16 +38,18 @@ RedReport/
 ├── clientes/            # Módulo de clientes
 ├── configuracion/       # Panel de configuración (admin)
 ├── facturacion/         # Facturación (PDF, pagos)
-├── gestion_soporte/     # Gestión de soporte (rol Gestión)
-├── informes/            # Generación de informes PDF
 ├── instalaciones/       # Instalaciones en campo
 ├── inventario/          # Inventario de equipos
 ├── login/               # Autenticación y recuperación
 ├── logs/                # Logs de aplicación
 ├── mapa/                # Mapa de cobertura
+├── notificaciones/      # Centro de notificaciones
+├── ordenes/             # Órdenes de servicio
 ├── public/              # Assets (css/, img/, js/)
+├── tickets/             # Tickets de soporte
 ├── usuarios/            # Gestión de usuarios y perfil
 ├── ventas/              # Ventas, planes, contratos
+├── api/                 # API REST
 ├── redreport.sql        # Esquema de base de datos
 └── .env.example         # Template de configuración
 ```
@@ -65,9 +67,9 @@ RedReport/
 
 - **Clientes**: CRUD completo, listado con DataTables, búsqueda por múltiples campos
 - **Reportes**: Registro y seguimiento de reportes técnicos
-- **Facturación**: Facturas mensuales con items dinámicos, PDF con Dompdf, pagos, anulaciones
+- **Facturación**: Facturas mensuales con items dinámicos, PDF con Dompdf, pagos, anulaciones, cartera
 - **Ventas**: Dashboard con estadísticas, planes, contratos, registro de ventas y comisiones
-- **Informes**: Generación de informes PDF
+- **Tickets de soporte**: Gestión unificada de tickets con categorías, prioridad, asignación y resolución
 - **Mapa de cobertura**: Visualización Leaflet/OSM con zonas poligonales y marcadores
 - **Inventario**: Equipos por tipo y estado, con filtros dinámicos
 - **Instalaciones**: Asignación a instaladores, geolocalización, registro de equipos instalados

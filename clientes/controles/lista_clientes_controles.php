@@ -2,7 +2,7 @@
 include('../../app/config/conexion.php'); // ajusta la ruta si es diferente
 
 // =================== CLIENTES ===================
-$sql_clientes = "SELECT id_cliente, nombre, documento, telefono, direccion, email 
+$sql_clientes = "SELECT id_cliente, nombre, documento, telefono, direccion, email, estado_servicio 
                  FROM tb_clientes ORDER BY nombre ASC";
 $q_clientes = $pdo->prepare($sql_clientes);
 $q_clientes->execute();

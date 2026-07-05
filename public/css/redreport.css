@@ -96,6 +96,9 @@ body {
 .brand-link span {
   font-size: 1.1rem;
   letter-spacing: -0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* Navigation */
@@ -195,6 +198,7 @@ body {
 .content {
   padding: 1.25rem 1.5rem 1.5rem;
   flex: 1;
+  overflow-x: hidden;
 }
 
 /* ---- Navbar ---- */
@@ -273,6 +277,18 @@ body {
 
 .card-body { padding: 1.25rem; }
 
+/* Table container: prevent horizontal overflow */
+.table-container {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table-container::-webkit-scrollbar { height: 4px; }
+.table-container::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+
+/* DataTables wrapper overflow */
+div.dataTables_wrapper { overflow-x: auto; }
+
 /* ---- Stat Cards (Dashboard) ---- */
 .stat-card {
   position: relative;
@@ -307,6 +323,9 @@ body {
   font-weight: 800;
   letter-spacing: -0.03em;
   line-height: 1.1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .stat-card .stat-label {
@@ -314,6 +333,9 @@ body {
   font-weight: 500;
   opacity: 0.85;
   margin-top: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .stat-card .stat-link {
@@ -684,7 +706,7 @@ div.dataTables_wrapper div.dataTables_paginate {
   .stat-card .stat-icon { font-size: 2rem; top: 8px; right: 8px; }
 
   /* Tables: horizontal scroll */
-  .table-responsive-custom {
+  .table-responsive-custom, .card-body .table {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
   }

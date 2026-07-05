@@ -2,7 +2,6 @@
 include('../sesion.php');
 include('../parte1.php');
 ?>
-<link rel="stylesheet" href="../public/css/redreport.css">
 <div class="content-wrapper">
     <div class="content-header">
         <div class="container-fluid">
@@ -88,19 +87,19 @@ include('../parte1.php');
     </div>
 </div>
 <?php include('../parte2.php'); ?>
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
-<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
 <script>
 function filtrar() {
     const val = $('#filtroEstado').val();
-    $('#tablaFacturas').DataTable().column(7).search(val).draw();
+    const table = $('#tablaFacturas').DataTable();
+    table.column(7).search(val).draw();
 }
 $(document).ready(function() {
     $('#tablaFacturas').DataTable({
-        language: { url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json' },
+        language: { url: '//cdn.datatables.net/plug-ins/1.13.11/i18n/es-ES.json' },
         order: [[0, 'desc']],
-        pageLength: 25
+        pageLength: 25,
+        dom: 'Bfrtip',
+        buttons: [{extend:'copy',text:'<i class="fas fa-copy"></i> Copiar'},{extend:'excel',text:'<i class="fas fa-file-excel"></i> Excel'},{extend:'csv',text:'<i class="fas fa-file-csv"></i> CSV'},{extend:'pdf',text:'<i class="fas fa-file-pdf"></i> PDF'},{extend:'print',text:'<i class="fas fa-print"></i> Imprimir'}]
     });
 });
 </script>

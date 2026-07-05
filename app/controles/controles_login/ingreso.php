@@ -71,6 +71,15 @@ if ($usuario) {
 
 if ($usuario && password_verify($password, $usuario['password'])) {
     registrar_intento($pdo, $usuario['id_usuario'], true);
+
+    if (!empty($usuario['google2fa_secret'])) {
+        $_SESSION['tentativa_2fa_user_id'] = $usuario['id_usuario'];
+        $_SESSION['tentativa_2fa_secret']  = $usuario['google2fa_secret'];
+        session_regenerate_id(true);
+        header("Location: " . APP_URL . "login/verificar_2fa.php");
+        exit();
+    }
+
     session_regenerate_id(true);
     $_SESSION['usuario']     = $usuario['nombre'];
     $_SESSION['id_usuario']  = $usuario['id_usuario'];
@@ -78,11 +87,11 @@ if ($usuario && password_verify($password, $usuario['password'])) {
     $_SESSION['nombre_rol']  = $usuario['nombre_rol'];
     $_SESSION['_ultimo_acceso'] = time();
 
-    bitacora($pdo, $usuario['id_usuario'], 'INICIO_SESION', 'tb_usuarios', $usuario['id_usuario'], "Usuario $nombre inició sesión");
+    bitacora($pdo, $usuario['id_usuario'], 'INICIO_SESION', 'tb_usuarios', $usuario['id_usuario'], "Usuario $nombre inici&oacute; sesi&oacute;n");
 
     $rutas = [
         'Administrador' => '../../../index.php',
-        'Gestion'       => '../../../gestion_soporte/index.php',
+        'Gestion'       => '../../../index.php',
     ];
 
     $destino = $rutas[$usuario['nombre_rol']] ?? '../../../login/login.php';

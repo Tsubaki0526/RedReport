@@ -21,6 +21,13 @@ $equipos->execute($params);
 $equipos = $equipos->fetchAll();
 
 $tipos = $pdo->query("SELECT * FROM tb_tipos_equipo")->fetchAll();
+
+// Stock minimo alertas
+$stock_bajo = $pdo->query("SELECT t.nombre, COUNT(e.id_equipo) AS disponibles, MIN(e.stock_minimo) AS minimo
+    FROM tb_tipos_equipo t
+    LEFT JOIN tb_equipos e ON e.id_tipo_equipo = t.id_tipo_equipo AND e.estado = 'Disponible'
+    GROUP BY t.id_tipo_equipo
+    HAVING disponibles < minimo OR (minimo > 0 AND disponibles IS NULL)")->fetchAll();
 ?>
 <div class="content-wrapper">
     <div class="content-header">
@@ -61,8 +68,15 @@ $tipos = $pdo->query("SELECT * FROM tb_tipos_equipo")->fetchAll();
                             <button type="submit" class="btn btn-sm btn-primary"><i class="fas fa-filter"></i> Filtrar</button>
                         </div>
                     </form>
+                    <?php if (!empty($stock_bajo)): ?>
+                    <div class="alert alert-warning py-2 mb-3">
+                        <i class="fas fa-exclamation-triangle me-2"></i><strong>Stock bajo:</strong>
+                        <?php foreach ($stock_bajo as $s): ?><span class="badge bg-warning text-dark me-2"><?= hescape($s['nombre']) ?>: <?= intval($s['disponibles']) ?> disp. (mín: <?= intval($s['minimo']) ?>)</span><?php endforeach; ?>
+                    </div>
+                    <?php endif; ?>
+                    <div class="table-container">
                     <table id="tablaEquipos" class="table table-bordered table-striped table-sm">
-                        <thead><tr><th>Serial</th><th>Tipo</th><th>Marca</th><th>Modelo</th><th>Estado</th><th>Cliente</th><th>Registro</th></tr></thead>
+                        <thead><tr><th>Serial</th><th>Tipo</th><th>Marca</th><th>Modelo</th><th>Estado</th><th>Cliente</th><th>Registro</th><th>Acciones</th></tr></thead>
                         <tbody>
                             <?php foreach ($equipos as $e): ?>
                             <tr>
@@ -73,10 +87,20 @@ $tipos = $pdo->query("SELECT * FROM tb_tipos_equipo")->fetchAll();
                                 <td><span class="badge bg-<?= $e['estado'] == 'Disponible' ? 'success' : ($e['estado'] == 'Asignado' ? 'info' : ($e['estado'] == 'Dañado' ? 'danger' : 'warning')) ?>"><?= $e['estado'] ?></span></td>
                                 <td><?= htmlspecialchars($e['cliente_nombre'] ?? '-') ?></td>
                                 <td><?= $e['fecha_registro'] ?></td>
+                                <td>
+                                    <?php if ($e['estado'] == 'Asignado'): ?>
+                                    <form method="POST" action="controles/devolver_equipo.php" class="d-inline" onsubmit="return confirm('Devolver este equipo a inventario?')">
+                                        <?php require_once('../app/config/seguridad.php'); echo csrf_field(); ?>
+                                        <input type="hidden" name="id_equipo" value="<?= $e['id_equipo'] ?>">
+                                        <button type="submit" class="btn btn-sm btn-warning" title="Devolver a inventario"><i class="fas fa-undo"></i></button>
+                                    </form>
+                                    <?php endif; ?>
+                                </td>
                             </tr>
                             <?php endforeach; ?>
                         </tbody>
                     </table>
+                    </div>
                 </div>
             </div>
         </div>

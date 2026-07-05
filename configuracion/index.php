@@ -79,7 +79,52 @@ $envContent = file_exists($envFile) ? file_get_contents($envFile) : '';
                     </form>
                 </div>
             </div>
+
+            <!-- SMTP Test Card -->
+            <div class="card mt-4">
+                <div class="card-header"><h3 class="card-title"><i class="fas fa-envelope me-2 text-primary"></i>Prueba de Email</h3></div>
+                <div class="card-body">
+                    <form id="formPruebaEmail">
+                        <?= csrf_field() ?>
+                        <div class="row align-items-end">
+                            <div class="col-md-8">
+                                <label class="form-label">Correo destinatario</label>
+                                <input type="email" name="destinatario" id="destinatarioEmail" class="form-control" value="<?= hescape($_SESSION['email'] ?? '') ?>" placeholder="correo@ejemplo.com">
+                            </div>
+                            <div class="col-md-4">
+                                <button type="submit" class="btn btn-primary w-100" id="btnProbarEmail"><i class="fas fa-paper-plane me-1"></i>Enviar prueba</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
 <?php include('../parte2.php'); ?>
+<script>
+$(document).ready(function() {
+    $('#formPruebaEmail').on('submit', function(e) {
+        e.preventDefault();
+        const btn = $('#btnProbarEmail').prop('disabled', true);
+        btn.html('<span class="spinner-border spinner-border-sm me-1"></span>Enviando...');
+        $.ajax({
+            url: 'controles/probar_email.php',
+            type: 'POST',
+            data: $(this).serialize(),
+            dataType: 'json'
+        }).done(function(res) {
+            if (res.success) {
+                Swal.fire({ icon: 'success', title: 'Enviado', text: res.message });
+            } else {
+                Swal.fire({ icon: 'error', title: 'Error', text: res.message });
+            }
+        }).fail(function() {
+            Swal.fire({ icon: 'error', title: 'Error', text: 'Error de conexión con el servidor' });
+        }).always(function() {
+            btn.prop('disabled', false).html('<i class="fas fa-paper-plane me-1"></i>Enviar prueba');
+        });
+    });
+});
+</script>

@@ -65,6 +65,7 @@ $ventas_recientes = $pdo->query("SELECT v.*, c.nombre AS cliente, u.nombre AS ve
                         <div class="card-header"><i class="fas fa-chart-pie me-2 text-primary"></i>Planes mas contratados</div>
                         <div class="card-body">
                             <?php if ($top_planes): ?>
+                            <div class="table-container">
                             <table class="table table-sm">
                                 <thead><tr><th>Plan</th><th class="text-end">Contratos</th></tr></thead>
                                 <tbody>
@@ -73,6 +74,7 @@ $ventas_recientes = $pdo->query("SELECT v.*, c.nombre AS cliente, u.nombre AS ve
                                 <?php endforeach; ?>
                                 </tbody>
                             </table>
+                            </div>
                             <?php else: ?>
                             <p class="text-muted mb-0">Sin contratos registrados</p>
                             <?php endif; ?>

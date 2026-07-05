@@ -74,6 +74,17 @@ include('../../parte1.php');
                     </div>
                   </div>
 
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Estado del servicio</label>
+                      <select class="form-control" name="estado_servicio">
+                        <option value="Activo">Activo</option>
+                        <option value="Suspendido">Suspendido</option>
+                        <option value="Cortado">Cortado</option>
+                      </select>
+                    </div>
+                  </div>
+
                 </div>
                 <hr>
                 <button type="submit" class="btn btn-primary">Registrar</button>

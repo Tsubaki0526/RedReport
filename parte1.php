@@ -1,6 +1,65 @@
 <?php
 require_once __DIR__ . '/app/config/config.php';
+if (session_status() === PHP_SESSION_NONE) { session_start(); }
 $url = APP_URL;
+$id_rol = $id_rol ?? 0;
+
+// Determinar el módulo actual basado en la URL
+$requestUri = $_SERVER['REQUEST_URI'];
+$scriptName = $_SERVER['SCRIPT_NAME'];
+// Extraer la parte relativa después del nombre del script base
+$relPath = str_replace('/RedReport/', '', $requestUri);
+$relPath = strtok($relPath, '?'); // quitar query string
+$parts = explode('/', trim($relPath, '/'));
+$currentModule = $parts[0] ?? '';
+// Si es la raíz, es dashboard
+if ($currentModule === '' || $currentModule === 'index.php') {
+    $currentModule = 'dashboard';
+}
+// Módulos que no tienen submenú (direct-link)
+$directModules = ['ordenes', 'tickets', 'informes', 'monitoreo'];
+// Módulos con submenú
+$collapseModules = [
+    'usuarios'      => 'menuUsuarios',
+    'clientes'      => 'menuClientes',
+    'ventas'        => 'menuVentas',
+    'facturacion'   => 'menuFacturacion',
+    'mapa'          => 'menuMapa',
+    'inventario'    => 'menuInventario',
+    'instalaciones' => 'menuInstalaciones',
+    'configuracion' => 'menuConfig',
+    'backup'        => 'menuConfig',
+];
+$activeCollapse = '';
+foreach ($collapseModules as $prefix => $menuId) {
+    if (strpos($relPath, $prefix) === 0) {
+        $activeCollapse = $menuId;
+        break;
+    }
+}
+function isActive($prefix) {
+    global $currentModule;
+    return $currentModule === $prefix ? 'active' : '';
+}
+function isCollapseShow($menuId) {
+    global $activeCollapse;
+    return $activeCollapse === $menuId ? 'show' : '';
+}
+function isAriaExpanded($menuId) {
+    global $activeCollapse;
+    return $activeCollapse === $menuId ? 'true' : 'false';
+}
+function navActive($prefix) {
+    global $currentModule, $directModules;
+    if (in_array($prefix, $directModules)) {
+        return $currentModule === $prefix ? 'active' : '';
+    }
+    // Para collapses, el active se añade si el submenú está abierto
+    global $collapseModules;
+    $menuId = $collapseModules[$prefix] ?? '';
+    global $activeCollapse;
+    return $activeCollapse === $menuId ? 'active' : '';
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -56,12 +115,12 @@ $url = APP_URL;
 
           <!-- Usuarios -->
           <li class="nav-item">
-            <a href="#" class="nav-link active" data-bs-toggle="collapse" data-bs-target="#menuUsuarios" aria-expanded="false">
+            <a href="#" class="nav-link <?= navActive('usuarios') ?>" data-bs-toggle="collapse" data-bs-target="#menuUsuarios" aria-expanded="<?= isAriaExpanded('menuUsuarios') ?>">
               <i class="fas fa-users nav-icon"></i>
               <span>Usuarios Y Seguridad</span>
               <i class="fas fa-angle-right right ms-auto"></i>
             </a>
-            <ul class="nav nav-treeview collapse" id="menuUsuarios">
+            <ul class="nav nav-treeview collapse <?= isCollapseShow('menuUsuarios') ?>" id="menuUsuarios">
               <li class="nav-item">
                 <a href="<?= $url ?>usuarios/lista.php" class="nav-link">
                   <i class="fas fa-list"></i> Listado De Usuarios
@@ -75,14 +134,14 @@ $url = APP_URL;
             </ul>
           </li>
 
-          <!-- Clientess -->
+          <!-- Clientes -->
           <li class="nav-item">
-            <a href="#" class="nav-link active" data-bs-toggle="collapse" data-bs-target="#menuClientes" aria-expanded="false">
+            <a href="#" class="nav-link <?= navActive('clientes') ?>" data-bs-toggle="collapse" data-bs-target="#menuClientes" aria-expanded="<?= isAriaExpanded('menuClientes') ?>">
               <i class="fas fa-users nav-icon"></i>
               <span>Clientes</span>
               <i class="fas fa-angle-right right ms-auto"></i>
             </a>
-            <ul class="nav nav-treeview collapse" id="menuClientes">
+            <ul class="nav nav-treeview collapse <?= isCollapseShow('menuClientes') ?>" id="menuClientes">
               <li class="nav-item">
                 <a href="<?= $url ?>clientes/vistas/lista.php" class="nav-link">
                   <i class="fas fa-list"></i> Listado De Clientes
@@ -93,18 +152,23 @@ $url = APP_URL;
                   <i class="fas fa-user-plus"></i> Registro De Clientes
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="<?= $url ?>clientes/importar.php" class="nav-link">
+                  <i class="fas fa-file-csv"></i> Importar CSV
+                </a>
+              </li>
             </ul>
           </li>
 
-          <?php if ($_SESSION['id_rol'] != 3): ?>
+          <?php if ($id_rol != 3): ?>
           <!-- Ventas -->
           <li class="nav-item">
-            <a href="#" class="nav-link active" data-bs-toggle="collapse" data-bs-target="#menuVentas" aria-expanded="false">
+            <a href="#" class="nav-link <?= navActive('ventas') ?>" data-bs-toggle="collapse" data-bs-target="#menuVentas" aria-expanded="<?= isAriaExpanded('menuVentas') ?>">
               <i class="fas fa-chart-line nav-icon"></i>
               <span>Ventas</span>
               <i class="fas fa-angle-right right ms-auto"></i>
             </a>
-            <ul class="nav nav-treeview collapse" id="menuVentas">
+            <ul class="nav nav-treeview collapse <?= isCollapseShow('menuVentas') ?>" id="menuVentas">
               <li class="nav-item">
                 <a href="<?= $url ?>ventas/index.php" class="nav-link">
                   <i class="fas fa-chart-pie"></i> Dashboard
@@ -129,35 +193,14 @@ $url = APP_URL;
           </li>
           <?php endif; ?>
 
-          <!-- Reportes -->
-          <li class="nav-item">
-            <a href="#" class="nav-link active" data-bs-toggle="collapse" data-bs-target="#menuReportes" aria-expanded="false">
-              <i class="fas fa-file-alt nav-icon"></i>
-              <span>Reportes</span>
-              <i class="fas fa-angle-right right ms-auto"></i>
-            </a>
-            <ul class="nav nav-treeview collapse" id="menuReportes">
-              <li class="nav-item">
-                <a href="<?= $url ?>gestion_soporte/vistas/lista_gestion_2.php" class="nav-link">
-                  <i class="fas fa-list"></i> Listado De Reportes
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="<?= $url ?>gestion_soporte/vistas/registrar_reporte_2.php" class="nav-link">
-                  <i class="fas fa-user-plus"></i> Registro De Reportes
-                </a>
-              </li>
-            </ul>
-          </li>
-
           <!-- Facturacion -->
           <li class="nav-item">
-            <a href="#" class="nav-link active" data-bs-toggle="collapse" data-bs-target="#menuFacturacion" aria-expanded="false">
+            <a href="#" class="nav-link <?= navActive('facturacion') ?>" data-bs-toggle="collapse" data-bs-target="#menuFacturacion" aria-expanded="<?= isAriaExpanded('menuFacturacion') ?>">
               <i class="fas fa-file-invoice nav-icon"></i>
               <span>Facturacion</span>
               <i class="fas fa-angle-right right ms-auto"></i>
             </a>
-            <ul class="nav nav-treeview collapse" id="menuFacturacion">
+            <ul class="nav nav-treeview collapse <?= isCollapseShow('menuFacturacion') ?>" id="menuFacturacion">
               <li class="nav-item">
                 <a href="<?= $url ?>facturacion/index.php" class="nav-link">
                   <i class="fas fa-list"></i> Listado de Facturas
@@ -168,23 +211,41 @@ $url = APP_URL;
                   <i class="fas fa-plus"></i> Crear Factura
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="<?= $url ?>facturacion/recurrente.php" class="nav-link">
+                  <i class="fas fa-sync-alt"></i> Facturación recurrente
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="<?= $url ?>facturacion/cartera.php" class="nav-link">
+                  <i class="fas fa-exclamation-triangle"></i> Cartera
+                </a>
+              </li>
             </ul>
           </li>
 
           <!-- Mapa de Cobertura -->
           <li class="nav-item">
-            <a href="#" class="nav-link active" data-bs-toggle="collapse" data-bs-target="#menuMapa" aria-expanded="false">
+            <a href="#" class="nav-link <?= navActive('mapa') ?>" data-bs-toggle="collapse" data-bs-target="#menuMapa" aria-expanded="<?= isAriaExpanded('menuMapa') ?>">
               <i class="fas fa-map-marked-alt nav-icon"></i>
               <span>Mapa de Cobertura</span>
               <i class="fas fa-angle-right right ms-auto"></i>
             </a>
-            <ul class="nav nav-treeview collapse" id="menuMapa">
+            <ul class="nav nav-treeview collapse <?= isCollapseShow('menuMapa') ?>" id="menuMapa">
               <li class="nav-item">
                 <a href="<?= $url ?>mapa/index.php" class="nav-link">
                   <i class="fas fa-map"></i> Ver Mapa
                 </a>
               </li>
-              <?php if ($_SESSION['id_rol'] == 1): ?>
+          <!-- Auditoria -->
+          <li class="nav-item">
+            <a href="<?= $url ?>auditoria/index.php" class="nav-link <?= isActive('auditoria') ?>">
+              <i class="fas fa-history nav-icon"></i>
+              <span>Auditoría</span>
+            </a>
+          </li>
+
+          <?php if ($id_rol == 1): ?>
               <li class="nav-item">
                 <a href="<?= $url ?>mapa/admin.php" class="nav-link">
                   <i class="fas fa-cog"></i> Administrar Zonas
@@ -194,15 +255,15 @@ $url = APP_URL;
             </ul>
           </li>
 
-          <?php if ($_SESSION['id_rol'] != 3): ?>
+          <?php if ($id_rol != 3): ?>
           <!-- Inventario -->
           <li class="nav-item">
-            <a href="#" class="nav-link active" data-bs-toggle="collapse" data-bs-target="#menuInventario" aria-expanded="false">
+            <a href="#" class="nav-link <?= navActive('inventario') ?>" data-bs-toggle="collapse" data-bs-target="#menuInventario" aria-expanded="<?= isAriaExpanded('menuInventario') ?>">
               <i class="fas fa-boxes nav-icon"></i>
               <span>Inventario de Equipos</span>
               <i class="fas fa-angle-right right ms-auto"></i>
             </a>
-            <ul class="nav nav-treeview collapse" id="menuInventario">
+            <ul class="nav nav-treeview collapse <?= isCollapseShow('menuInventario') ?>" id="menuInventario">
               <li class="nav-item">
                 <a href="<?= $url ?>inventario/index.php" class="nav-link">
                   <i class="fas fa-list"></i> Listado de Equipos
@@ -217,18 +278,113 @@ $url = APP_URL;
           </li>
           <?php endif; ?>
 
-          <?php if ($_SESSION['id_rol'] != 2): ?>
+          <?php if ($id_rol != 2): ?>
           <!-- Instalaciones -->
           <li class="nav-item">
-            <a href="#" class="nav-link active" data-bs-toggle="collapse" data-bs-target="#menuInstalaciones" aria-expanded="false">
+            <a href="#" class="nav-link <?= navActive('instalaciones') ?>" data-bs-toggle="collapse" data-bs-target="#menuInstalaciones" aria-expanded="<?= isAriaExpanded('menuInstalaciones') ?>">
               <i class="fas fa-hard-hat nav-icon"></i>
               <span>Instalaciones</span>
               <i class="fas fa-angle-right right ms-auto"></i>
             </a>
-            <ul class="nav nav-treeview collapse" id="menuInstalaciones">
+            <ul class="nav nav-treeview collapse <?= isCollapseShow('menuInstalaciones') ?>" id="menuInstalaciones">
               <li class="nav-item">
                 <a href="<?= $url ?>instalaciones/index.php" class="nav-link">
                   <i class="fas fa-list"></i> Gestionar Instalaciones
+                </a>
+              </li>
+            </ul>
+          </li>
+          <?php endif; ?>
+
+          <!-- Ordenes de servicio -->
+          <li class="nav-item">
+            <a href="<?= $url ?>ordenes/index.php" class="nav-link <?= isActive('ordenes') ?>">
+              <i class="fas fa-clipboard nav-icon"></i>
+              <span>Ordenes de servicio</span>
+            </a>
+          </li>
+
+          <!-- Tickets de soporte -->
+          <li class="nav-item">
+            <a href="<?= $url ?>tickets/index.php" class="nav-link <?= isActive('tickets') ?>">
+              <i class="fas fa-headset nav-icon"></i>
+              <span>Tickets de soporte</span>
+            </a>
+          </li>
+
+          <!-- Informes -->
+          <li class="nav-item">
+            <a href="<?= $url ?>informes/index.php" class="nav-link <?= isActive('informes') ?>">
+              <i class="fas fa-chart-bar nav-icon"></i>
+              <span>Informes</span>
+            </a>
+          </li>
+
+          <!-- Monitoreo SNMP -->
+          <li class="nav-item">
+            <a href="<?= $url ?>monitoreo/index.php" class="nav-link <?= isActive('monitoreo') ?>">
+              <i class="fas fa-network-wired nav-icon"></i>
+              <span>Monitoreo SNMP</span>
+            </a>
+          </li>
+
+          <?php if ($id_rol == 1): ?>
+          <!-- Configuracion -->
+          <li class="nav-item">
+            <a href="#" class="nav-link <?= navActive('configuracion') ?>" data-bs-toggle="collapse" data-bs-target="#menuConfig" aria-expanded="<?= isAriaExpanded('menuConfig') ?>">
+              <i class="fas fa-cog nav-icon"></i>
+              <span>Configuracion</span>
+              <i class="fas fa-angle-right right ms-auto"></i>
+            </a>
+            <ul class="nav nav-treeview collapse <?= isCollapseShow('menuConfig') ?>" id="menuConfig">
+              <li class="nav-item">
+                <a href="<?= $url ?>configuracion/index.php" class="nav-link">
+                  <i class="fas fa-sliders-h"></i> Sistema
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="<?= $url ?>configuracion/empresa.php" class="nav-link">
+                  <i class="fas fa-building"></i> Datos de la Empresa
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="<?= $url ?>configuracion/permisos.php" class="nav-link">
+                  <i class="fas fa-shield-alt"></i> Permisos por rol
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="<?= $url ?>backup/index.php" class="nav-link">
+                  <i class="fas fa-database"></i> Backup BD
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="<?= $url ?>configuracion/plantillas_email.php" class="nav-link">
+                  <i class="fas fa-envelope"></i> Plantillas Email
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="<?= $url ?>configuracion/health.php" class="nav-link">
+                  <i class="fas fa-heartbeat"></i> Health Dashboard
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="<?= $url ?>configuracion/mantenimiento_bd.php" class="nav-link">
+                  <i class="fas fa-database"></i> Mantenimiento BD
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="<?= $url ?>configuracion/logs.php" class="nav-link">
+                  <i class="fas fa-exclamation-triangle"></i> Visor de Logs
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="<?= $url ?>configuracion/cola_email.php" class="nav-link">
+                  <i class="fas fa-envelope-open-text"></i> Cola de Correos
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="<?= $url ?>api/documentacion.php" class="nav-link">
+                  <i class="fas fa-code"></i> API Docs
                 </a>
               </li>
             </ul>
@@ -259,15 +415,26 @@ $url = APP_URL;
             <i class="fas fa-bars"></i>
           </a>
         </li>
+        <li class="nav-item d-none d-md-block">
+          <a class="nav-link" href="#" id="globalSearchBtn" role="button" title="Buscar (Ctrl+K)">
+            <i class="fas fa-search"></i>
+          </a>
+        </li>
       </ul>
       <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link position-relative" href="<?= $url ?>notificaciones/index.php" title="Notificaciones">
+            <i class="fas fa-bell"></i>
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger notif-badge" style="font-size:9px;display:none;">0</span>
+          </a>
+        </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="userMenu" role="button" data-bs-toggle="dropdown">
             <i class="fas fa-user-circle"></i> <span class="d-none d-sm-inline"><?= htmlspecialchars($_SESSION['usuario'] ?? 'Usuario') ?></span>
           </a>
           <ul class="dropdown-menu dropdown-menu-end">
             <li><a class="dropdown-item" href="<?= $url ?>usuarios/perfil.php"><i class="fas fa-id-card me-2"></i>Mi Perfil</a></li>
-            <?php if ($_SESSION['id_rol'] == 1): ?>
+            <?php if ($id_rol == 1): ?>
             <li><a class="dropdown-item" href="<?= $url ?>configuracion/index.php"><i class="fas fa-cog me-2"></i>Configuración</a></li>
             <?php endif; ?>
             <li><hr class="dropdown-divider"></li>

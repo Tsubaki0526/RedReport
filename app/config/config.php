@@ -39,11 +39,16 @@ define('SMTP_FROM', $_ENV['SMTP_FROM'] ?? 'no-reply@redreport.com');
 define('SMTP_FROM_NAME', $_ENV['SMTP_FROM_NAME'] ?? 'RedReport');
 
 $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
-$host = $_SERVER['HTTP_HOST'] ?? 'localhost';
-$basePath = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\');
-if (str_ends_with($basePath, '\\') || str_ends_with($basePath, '/')) {
-    $basePath = rtrim($basePath, '/\\');
+// Trust ngrok / proxy forwarded protocol
+if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') {
+    $protocol = 'https';
 }
+$host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+// Calculate base path from config.php's own location (always app/config/)
+$docRoot = rtrim(str_replace('\\', '/', $_SERVER['DOCUMENT_ROOT']), '/');
+$configDir = str_replace('\\', '/', __DIR__);
+$basePath = rtrim(str_replace($docRoot, '', $configDir), '/');
+$basePath = dirname(dirname($basePath)); // app/config -> project root
 define('APP_URL', rtrim($_ENV['APP_URL'] ?? "$protocol://$host$basePath", '/') . '/');
 define('APP_NAME', $_ENV['APP_NAME'] ?? 'RedReport');
 define('APP_ENV', $_ENV['APP_ENV'] ?? 'development');

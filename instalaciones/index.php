@@ -9,9 +9,12 @@ $es_admin = ($_SESSION['id_rol'] == 1);
 
 $sql = "SELECT c.id_cliente, c.nombre, c.direccion, c.telefono, c.lat, c.lng,
                c.fecha_instalacion, c.id_instalador,
-               u.nombre AS instalador_nombre
+               u.nombre AS instalador_nombre,
+               co.id_contrato, p.nombre AS plan_nombre
         FROM tb_clientes c
         LEFT JOIN tb_usuarios u ON c.id_instalador = u.id_usuario
+        LEFT JOIN tb_contratos co ON co.id_cliente = c.id_cliente AND co.estado = 'activo'
+        LEFT JOIN tb_planes p ON co.id_plan = p.id_plan
         WHERE 1=1";
 $params = [];
 if ($es_instalador) {
@@ -50,14 +53,16 @@ if ($es_admin) {
                     <h3 class="card-title"><?= $es_instalador ? 'Mis instalaciones' : 'Listado de instalaciones' ?></h3>
                 </div>
                 <div class="card-body">
+                    <div class="table-container">
                     <table id="tablaInst" class="table table-bordered table-striped table-sm">
-                        <thead><tr><th>Cliente</th><th>Dirección</th><th>Teléfono</th><th>Instalador</th><th>Estado</th><th>Acciones</th></tr></thead>
+                        <thead><tr><th>Cliente</th><th>Dirección</th><th>Teléfono</th><th>Plan</th><th>Instalador</th><th>Estado</th><th>Acciones</th></tr></thead>
                         <tbody>
                             <?php foreach ($clientes as $c): ?>
                             <tr>
                                 <td><?= htmlspecialchars($c['nombre']) ?></td>
                                 <td><?= htmlspecialchars($c['direccion'] ?? '-') ?></td>
                                 <td><?= htmlspecialchars($c['telefono'] ?? '-') ?></td>
+                                <td><?= htmlspecialchars($c['plan_nombre'] ?? '-') ?></td>
                                 <td><?= htmlspecialchars($c['instalador_nombre'] ?? 'Sin asignar') ?></td>
                                 <td>
                                     <?php if ($c['fecha_instalacion']): ?>
@@ -85,8 +90,9 @@ if ($es_admin) {
                                 </td>
                             </tr>
                             <?php endforeach; ?>
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
+                        </div>
                 </div>
             </div>
         </div>

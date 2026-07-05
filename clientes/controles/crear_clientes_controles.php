@@ -10,17 +10,19 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !csrf_verify($_POST['_csrf_token'] 
     $telefono   = $_POST['telefono'] ?? '';
     $direccion  = $_POST['direccion'] ?? '';
     $email      = $_POST['email'] ?? '';
+    $estado_servicio = $_POST['estado_servicio'] ?? 'Activo';
 
     if (!empty($nombre) && !empty($telefono) && !empty($direccion)) {
         try {
-            $sql = "INSERT INTO tb_clientes (nombre, documento, telefono, direccion, email) 
-                    VALUES (:nombre, :documento, :telefono, :direccion, :email)";
+            $sql = "INSERT INTO tb_clientes (nombre, documento, telefono, direccion, email, estado_servicio) 
+                    VALUES (:nombre, :documento, :telefono, :direccion, :email, :estado)";
             $query = $pdo->prepare($sql);
             $query->bindParam(':nombre', $nombre);
             $query->bindParam(':documento', $documento);
             $query->bindParam(':telefono', $telefono);
             $query->bindParam(':direccion', $direccion);
             $query->bindParam(':email', $email);
+            $query->bindParam(':estado', $estado_servicio);
             $query->execute();
             $nuevo_id = $pdo->lastInsertId();
             bitacora($pdo, $_SESSION['id_usuario'], 'CREAR', 'tb_clientes', $nuevo_id, "Cliente: $nombre");

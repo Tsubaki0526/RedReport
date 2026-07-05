@@ -103,6 +103,82 @@ document.querySelector('[data-bs-toggle="fullscreen"]')?.addEventListener('click
 document.querySelectorAll('.alert-auto').forEach(function(el) {
   setTimeout(function() { el.style.display = 'none'; }, 5000);
 });
+
+// Notificaciones: contador no leidas
+function actualizarNotif() {
+  fetch('<?= APP_URL ?>notificaciones/controles/contar_no_leidas.php')
+    .then(r => r.json())
+    .then(d => {
+      const badge = document.querySelector('.notif-badge');
+      if (badge) {
+        if (d.count > 0) { badge.style.display = 'inline'; badge.textContent = d.count; }
+        else { badge.style.display = 'none'; }
+      }
+    }).catch(() => {});
+}
+actualizarNotif();
+setInterval(actualizarNotif, 30000);
+</script>
+
+<!-- Global Search Modal -->
+<div class="modal fade" id="globalSearchModal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header pb-2">
+        <div class="input-group">
+          <span class="input-group-text bg-transparent border-0"><i class="fas fa-search text-muted"></i></span>
+          <input type="text" class="form-control form-control-lg border-0 ps-0" id="globalSearchInput" placeholder="Buscar clientes, facturas, tickets, órdenes...">
+          <span class="input-group-text bg-transparent border-0"><kbd class="bg-light text-muted border">ESC</kbd></span>
+        </div>
+      </div>
+      <div class="modal-body pt-2" id="globalSearchResults">
+        <div class="text-center text-muted py-4"><i class="fas fa-search me-2"></i>Escribe para buscar...</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Global Search Logic -->
+<script>
+(function() {
+  const btn = document.getElementById('globalSearchBtn');
+  const modal = new bootstrap.Modal(document.getElementById('globalSearchModal'));
+  const input = document.getElementById('globalSearchInput');
+  const results = document.getElementById('globalSearchResults');
+  let timer;
+
+  btn?.addEventListener('click', function(e) { e.preventDefault(); modal.show(); setTimeout(() => input?.focus(), 300); });
+
+  document.addEventListener('keydown', function(e) {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'k') { e.preventDefault(); modal.show(); setTimeout(() => input?.focus(), 300); }
+    if (e.key === 'Escape' && document.getElementById('globalSearchModal')?.classList.contains('show')) { modal.hide(); }
+  });
+
+  input?.addEventListener('input', function() {
+    clearTimeout(timer);
+    const q = this.value.trim();
+    if (q.length < 2) { results.innerHTML = '<div class="text-center text-muted py-4"><i class="fas fa-search me-2"></i>Escribe para buscar...</div>'; return; }
+    timer = setTimeout(function() {
+      results.innerHTML = '<div class="text-center py-4"><div class="spinner-border spinner-border-sm text-primary me-2"></div>Buscando...</div>';
+      fetch('<?= APP_URL ?>app/controles/busqueda_global.php?q=' + encodeURIComponent(q))
+        .then(r => r.json())
+        .then(d => {
+          if (!d.length) { results.innerHTML = '<div class="text-center text-muted py-4"><i class="fas fa-times-circle me-2"></i>Sin resultados</div>'; return; }
+          let html = '<div class="list-group list-group-flush">';
+          d.forEach(function(item) {
+            html += '<a href="' + item.url + '" class="list-group-item list-group-item-action d-flex align-items-center gap-3 border-0 rounded-3 mb-1">';
+            html += '<span class="badge bg-' + item.badge + ' rounded-pill" style="width:70px;flex-shrink:0;">' + item.type + '</span>';
+            html += '<div class="flex-grow-1"><div class="fw-semibold">' + item.label + '</div>';
+            if (item.sub) html += '<small class="text-muted">' + item.sub + '</small>';
+            html += '</div></a>';
+          });
+          html += '</div>';
+          results.innerHTML = html;
+        })
+        .catch(function() { results.innerHTML = '<div class="text-center text-danger py-4"><i class="fas fa-exclamation-triangle me-2"></i>Error de búsqueda</div>'; });
+    }, 300);
+  });
+})();
 </script>
 
 </body>

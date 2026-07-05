@@ -99,6 +99,39 @@ $equipos_asignados = $equipos_asignados->fetchAll();
                         </div>
 
                         <div class="card">
+                            <div class="card-header"><h3 class="card-title">Fotos / Evidencias</h3></div>
+                            <div class="card-body">
+                                <form method="POST" action="controles/subir_foto.php" enctype="multipart/form-data">
+                                    <?= csrf_field() ?>
+                                    <input type="hidden" name="id_cliente" value="<?= $cliente['id_cliente'] ?>">
+                                    <div class="mb-3">
+                                        <input type="file" name="foto" class="form-control form-control-sm" accept="image/*" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <input type="text" name="descripcion" class="form-control form-control-sm" placeholder="Descripcion (opcional)">
+                                    </div>
+                                    <button type="submit" class="btn btn-sm btn-info"><i class="fas fa-upload"></i> Subir foto</button>
+                                </form>
+                                <?php
+                                $fotos = $pdo->prepare("SELECT * FROM tb_instalacion_fotos WHERE id_cliente = ? ORDER BY fecha_subida DESC");
+                                $fotos->execute([$cliente['id_cliente']]);
+                                $fotos = $fotos->fetchAll();
+                                if (!empty($fotos)): ?>
+                                <div class="row mt-3">
+                                    <?php foreach ($fotos as $f): ?>
+                                    <div class="col-4 col-md-3 mb-2">
+                                        <a href="<?= APP_URL ?>public/uploads/<?= hescape($f['nombre_archivo']) ?>" target="_blank">
+                                            <img src="<?= APP_URL ?>public/uploads/<?= hescape($f['nombre_archivo']) ?>" class="img-thumbnail" style="height:80px;object-fit:cover;">
+                                        </a>
+                                        <?php if ($f['descripcion']): ?><small class="d-block text-muted"><?= hescape($f['descripcion']) ?></small><?php endif; ?>
+                                    </div>
+                                    <?php endforeach; ?>
+                                </div>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+
+                        <div class="card">
                             <div class="card-header"><h3 class="card-title">Finalizar instalación</h3></div>
                             <div class="card-body">
                                 <div class="mb-3">
