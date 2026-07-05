@@ -33,7 +33,7 @@ $total_cartera = array_sum(array_column($cartera, 'total_deuda'));
                     <button class="btn btn-sm btn-success" onclick="window.print()"><i class="fas fa-print"></i> Imprimir</button>
                 </div>
                 <div class="card-body p-0">
-                    <div class="table-responsive">
+                    <div class="table-wrap">
                         <table id="tablaCartera" class="table table-hover mb-0">
                             <thead><tr><th>Cliente</th><th>Teléfono</th><th>Estado</th><th>Facturas vencidas</th><th>Total deuda</th><th>Días mora</th><th>Último vencimiento</th><th>Acciones</th></tr></thead>
                             <tbody>

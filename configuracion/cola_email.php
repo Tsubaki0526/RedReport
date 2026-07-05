@@ -73,7 +73,7 @@ $status = $pdo->query("
                 </div>
             </div>
             <div class="card-body">
-                <div class="table-responsive">
+                <div class="table-wrap">
                     <table id="tablaCola" class="table table-bordered table-hover w-100">
                         <thead>
                             <tr>

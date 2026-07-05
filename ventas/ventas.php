@@ -96,7 +96,7 @@ $ventas = $pdo->query("SELECT v.*, c.nombre AS cliente, u.nombre AS vendedor FRO
             <div class="card">
                 <div class="card-header"><i class="fas fa-history me-2 text-primary"></i>Historial de Ventas</div>
                 <div class="card-body">
-                    <div class="table-responsive">
+                    <div class="table-wrap">
                         <table id="tablaVentas" class="table table-hover">
                             <thead>
                                 <tr><th>#</th><th>Cliente</th><th>Tipo</th><th>Monto</th><th>Comision</th><th>Vendedor</th><th>Fecha</th></tr>

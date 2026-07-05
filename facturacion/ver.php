@@ -80,7 +80,7 @@ $badge = match($factura['estado']) {
                                             <p class="mb-0 mt-2"><span class="badge <?= $badge ?> fs-6"><?= ucfirst($factura['estado']) ?></span></p>
                                         </div>
                                     </div>
-                                    <div class="table-responsive">
+                                    <div class="table-wrap">
                                         <table class="table table-bordered">
                                             <thead class="table-dark">
                                                 <tr>

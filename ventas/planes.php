@@ -24,7 +24,7 @@ $planes = $pdo->query("SELECT * FROM tb_planes ORDER BY precio")->fetchAll(PDO::
             <div class="card">
                 <div class="card-header"><i class="fas fa-tags me-2 text-primary"></i>Planes disponibles</div>
                 <div class="card-body">
-                    <div class="table-responsive">
+                    <div class="table-wrap">
                         <table class="table table-hover">
                             <thead>
                                 <tr><th>Nombre</th><th>Velocidad</th><th>Precio</th><th>Descripcion</th><th>Estado</th>

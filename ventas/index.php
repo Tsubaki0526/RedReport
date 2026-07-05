@@ -88,7 +88,7 @@ $ventas_recientes = $pdo->query("SELECT v.*, c.nombre AS cliente, u.nombre AS ve
                             <a href="ventas.php" class="btn btn-primary btn-sm"><i class="fas fa-plus"></i> Nueva Venta</a>
                         </div>
                         <div class="card-body p-0">
-                            <div class="table-responsive">
+                            <div class="table-wrap">
                                 <table class="table table-sm mb-0">
                                     <thead><tr><th>Cliente</th><th>Tipo</th><th>Monto</th><th>Vendedor</th><th>Fecha</th></tr></thead>
                                     <tbody>

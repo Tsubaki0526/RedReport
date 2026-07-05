@@ -122,7 +122,7 @@ $timeline = array_slice($timeline, 0, 20);
                     <div class="card">
                         <div class="card-header"><h3 class="card-title"><i class="fas fa-file-contract me-2 text-primary"></i>Contratos</h3></div>
                         <div class="card-body p-0">
-                            <div class="table-responsive">
+                            <div class="table-wrap">
                                 <table class="table table-sm table-hover mb-0">
                                     <thead><tr><th>#</th><th>Plan</th><th>Valor</th><th>Inicio</th><th>Fin</th><th>Estado</th></tr></thead>
                                     <tbody>
@@ -147,9 +147,9 @@ $timeline = array_slice($timeline, 0, 20);
                     <div class="card">
                         <div class="card-header"><h3 class="card-title"><i class="fas fa-file-invoice me-2 text-primary"></i>Facturas</h3></div>
                         <div class="card-body p-0">
-                            <div class="table-responsive">
+                            <div class="table-wrap">
                                 <table class="table table-sm table-hover mb-0">
-                                    <thead><tr><th>#</th><th>Emisión</th><th>Vencimiento</th><th>Total</th><th>Estado</th><th>Pago</th></tr></thead>
+                                    <thead><tr><th>#</th><th>Emision</th><th>Vencimiento</th><th>Total</th><th>Estado</th></tr></thead>
                                     <tbody>
                                         <?php foreach ($facturas as $f): ?>
                                         <tr>
@@ -172,9 +172,9 @@ $timeline = array_slice($timeline, 0, 20);
                     <div class="card">
                         <div class="card-header"><h3 class="card-title"><i class="fas fa-microchip me-2 text-primary"></i>Equipos asignados</h3></div>
                         <div class="card-body p-0">
-                            <div class="table-responsive">
+                            <div class="table-wrap">
                                 <table class="table table-sm table-hover mb-0">
-                                    <thead><tr><th>Tipo</th><th>Serial</th><th>Marca</th><th>Estado</th><th>Asignado</th></tr></thead>
+                                    <thead><tr><th>Serial</th><th>Tipo</th><th>Marca</th><th>Estado</th></tr></thead>
                                     <tbody>
                                         <?php foreach ($equipos as $eq): ?>
                                         <tr>

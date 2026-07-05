@@ -56,6 +56,7 @@ usort($backups, function($a, $b) { return filemtime($b) - filemtime($a); });
                         <?php if (empty($backups)): ?>
                             <p class="text-muted text-center py-3">No hay backups disponibles</p>
                         <?php else: ?>
+                            <div class="table-container">
                             <table class="table table-sm mb-0">
                                 <thead><tr><th>Archivo</th><th>Tamaño</th><th>Fecha</th><th></th></tr></thead>
                                 <tbody>
@@ -73,6 +74,7 @@ usort($backups, function($a, $b) { return filemtime($b) - filemtime($a); });
                                     <?php endforeach; ?>
                                 </tbody>
                             </table>
+                            </div>
                         <?php endif; ?>
                     </div>
                 </div>

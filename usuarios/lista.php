@@ -31,6 +31,7 @@ include('../parte1.php');
                     </div>
 
                     <div class="card-body">
+                    <div class="table-container">
                         <table id="example1" class="table table-bordered table-striped table-sm">
                             <thead>
                                 <tr>

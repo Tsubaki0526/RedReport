@@ -59,7 +59,7 @@ $vendedores = $pdo->query("SELECT id_usuario, nombre FROM tb_usuarios WHERE id_r
         <div class="card">
             <div class="card-header"><h3 class="card-title"><i class="fas fa-table me-2"></i><?= ucfirst($tipo) ?></h3></div>
             <div class="card-body p-0">
-                <div class="table-responsive">
+                <div class="table-wrap">
                     <table class="table table-sm table-hover mb-0" id="tablaInforme">
                         <thead>
                             <?php if ($tipo == 'facturacion'): ?>

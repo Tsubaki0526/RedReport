@@ -57,7 +57,7 @@ $clientes = $pdo->query("SELECT id_cliente, nombre, documento FROM tb_clientes O
                                 <button type="button" class="btn btn-success btn-sm" onclick="agregarItem()"><i class="fas fa-plus"></i> Agregar</button>
                             </div>
                             <div class="card-body">
-                                <div class="table-responsive">
+                                <div class="table-wrap">
                                     <table class="table table-sm" id="tablaItems">
                                         <thead>
                                             <tr>

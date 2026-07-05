@@ -31,7 +31,7 @@ include('../parte1.php');
                     </div>
                 </div>
                 <div class="card-body">
-                    <div class="table-responsive">
+                    <div class="table-wrap">
                         <table id="tablaFacturas" class="table table-hover">
                             <thead>
                                 <tr>

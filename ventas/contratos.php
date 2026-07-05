@@ -35,8 +35,8 @@ $contratos = $pdo->query("SELECT c.*, cl.nombre AS cliente, p.nombre AS plan, u.
             <div class="card">
                 <div class="card-header"><i class="fas fa-file-contract me-2 text-primary"></i>Listado de contratos</div>
                 <div class="card-body">
-                    <div class="table-responsive">
-                        <table id="tablaContratos" class="table table-hover">
+                        <div class="table-wrap">
+                            <table id="tablaContratos" class="table table-hover">
                             <thead>
                                 <tr><th>#</th><th>Cliente</th><th>Plan</th><th>Vendedor</th><th>Inicio</th><th>Fin</th><th>Estado</th><th>Acciones</th></tr>
                             </thead>
