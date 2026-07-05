@@ -102,6 +102,7 @@ include('../parte1.php');
             "responsive": true,
             "lengthChange": true,
             "autoWidth": false,
+            "language": { "url": "//cdn.datatables.net/plug-ins/1.13.11/i18n/es-ES.json" },
             buttons: [{
                     extend: 'collection',
                     text: 'Reportes',

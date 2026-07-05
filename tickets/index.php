@@ -19,7 +19,7 @@ $prioridades = ['Baja' => 'success', 'Media' => 'warning', 'Alta' => 'danger', '
     <div class="content"><div class="container-fluid">
         <div class="card"><div class="card-body p-0">
             <div class="table-container">
-            <table class="table table-sm mb-0">
+            <table id="tablaTickets" class="table table-sm mb-0">
                 <thead><tr><th>Ticket</th><th>Cliente</th><th>Asunto</th><th>Categoria</th><th>Prioridad</th><th>Estado</th><th>Asignado</th><th>Fecha</th><th></th></tr></thead>
                 <tbody>
                     <?php foreach ($tickets as $t): ?>
@@ -118,6 +118,14 @@ $prioridades = ['Baja' => 'success', 'Media' => 'warning', 'Alta' => 'danger', '
 </div></div></div>
 
 <script>
+$('#tablaTickets').DataTable({
+    language: { url: '//cdn.datatables.net/plug-ins/1.13.11/i18n/es-ES.json' },
+    order: [[0, 'desc']],
+    pageLength: 25,
+    responsive: true,
+    autoWidth: false,
+    columnDefs: [{ orderable: false, targets: -1 }]
+});
 $(document).on('click', '.btn-ver-ticket', function() {
     $.get('controles/ver_ticket.php?id=' + $(this).data('id'), function(r) {
         $('#detalleTicketBody').html(r);

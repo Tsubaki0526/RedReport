@@ -88,18 +88,17 @@ include('../parte1.php');
 </div>
 <?php include('../parte2.php'); ?>
 <script>
-function filtrar() {
-    const val = $('#filtroEstado').val();
-    const table = $('#tablaFacturas').DataTable();
-    table.column(7).search(val).draw();
-}
-$(document).ready(function() {
-    $('#tablaFacturas').DataTable({
-        language: { url: '//cdn.datatables.net/plug-ins/1.13.11/i18n/es-ES.json' },
-        order: [[0, 'desc']],
-        pageLength: 25,
-        dom: 'Bfrtip',
-        buttons: [{extend:'copy',text:'<i class="fas fa-copy"></i> Copiar'},{extend:'excel',text:'<i class="fas fa-file-excel"></i> Excel'},{extend:'csv',text:'<i class="fas fa-file-csv"></i> CSV'},{extend:'pdf',text:'<i class="fas fa-file-pdf"></i> PDF'},{extend:'print',text:'<i class="fas fa-print"></i> Imprimir'}]
-    });
+var tablaFacturas = $('#tablaFacturas').DataTable({
+    language: { url: '//cdn.datatables.net/plug-ins/1.13.11/i18n/es-ES.json' },
+    order: [[0, 'desc']],
+    pageLength: 25,
+    responsive: true,
+    autoWidth: false,
+    dom: 'Bfrtip',
+    buttons: [{extend:'copy',text:'<i class="fas fa-copy"></i> Copiar'},{extend:'excel',text:'<i class="fas fa-file-excel"></i> Excel'},{extend:'csv',text:'<i class="fas fa-file-csv"></i> CSV'},{extend:'pdf',text:'<i class="fas fa-file-pdf"></i> PDF'},{extend:'print',text:'<i class="fas fa-print"></i> Imprimir'}],
+    columnDefs: [{ orderable: false, targets: -1 }]
 });
+function filtrar() {
+    tablaFacturas.column(7).search($('#filtroEstado').val()).draw();
+}
 </script>

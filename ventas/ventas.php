@@ -122,15 +122,13 @@ $ventas = $pdo->query("SELECT v.*, c.nombre AS cliente, u.nombre AS vendedor FRO
     </div>
 </div>
 <?php include('../parte2.php'); ?>
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
-<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
 <script>
-$(document).ready(function() {
-    $('#tablaVentas').DataTable({
-        language: { url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json' },
-        order: [[0, 'desc']],
-        pageLength: 25
-    });
+$('#tablaVentas').DataTable({
+    language: { url: '//cdn.datatables.net/plug-ins/1.13.11/i18n/es-ES.json' },
+    order: [[0, 'desc']],
+    pageLength: 25,
+    responsive: true,
+    autoWidth: false,
+    columnDefs: [{ orderable: false, targets: -1 }]
 });
 </script>

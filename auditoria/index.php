@@ -68,3 +68,13 @@ $registros = $stmt->fetchAll();
   </div>
 </div>
 <?php include __DIR__ . '/../parte2.php'; ?>
+<script>
+$('#tablaAuditoria').DataTable({
+    language: { url: '//cdn.datatables.net/plug-ins/1.13.11/i18n/es-ES.json' },
+    order: [[0, 'desc']],
+    pageLength: 25,
+    responsive: true,
+    autoWidth: false,
+    columnDefs: [{ orderable: false, targets: [1,2,3,4,5,6] }]
+});
+</script>

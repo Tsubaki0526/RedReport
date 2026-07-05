@@ -118,4 +118,4 @@ $vendedores = $pdo->query("SELECT id_usuario, nombre FROM tb_usuarios WHERE id_r
     </div></div>
 </div>
 <?php include('../parte2.php'); ?>
-<script>$(document).ready(function(){let t=$('#tablaInforme').DataTable({pageLength:25,language:{url:'https://cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'},dom:'Bfrtip',buttons:['copy','excel','pdf','print']});});</script>
+<script>$('#tablaInforme').DataTable({pageLength:25,responsive:true,autoWidth:false,language:{url:'//cdn.datatables.net/plug-ins/1.13.11/i18n/es-ES.json'},dom:'Bfrtip',buttons:['copy','excel','pdf','print'],columnDefs:[{orderable:false,targets:-1}]});</script>

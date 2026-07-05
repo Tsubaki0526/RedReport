@@ -82,6 +82,14 @@ $dispositivos = $pdo->query("SELECT d.*, c.nombre AS cliente_nombre FROM tb_disp
 
 <?php include('../parte2.php'); ?>
 <script>
+$('#tablaMonitoreo').DataTable({
+    language: { url: '//cdn.datatables.net/plug-ins/1.13.11/i18n/es-ES.json' },
+    order: [[0, 'asc']],
+    pageLength: 25,
+    responsive: true,
+    autoWidth: false,
+    columnDefs: [{ orderable: false, targets: -1 }]
+});
 function escanearBtn(id, ip) {
     $('#estado-' + id).html('<span class="badge bg-secondary"><i class="fas fa-spinner fa-spin"></i></span>');
     $('#senal-' + id).html('<span class="badge bg-secondary"><i class="fas fa-spinner fa-spin"></i></span>');

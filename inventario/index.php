@@ -107,4 +107,4 @@ $stock_bajo = $pdo->query("SELECT t.nombre, COUNT(e.id_equipo) AS disponibles, M
     </div>
 </div>
 <?php include('../parte2.php'); ?>
-<script>$(function(){$('#tablaEquipos').DataTable({responsive:true,autoWidth:false});});</script>
+<script>$(function(){$('#tablaEquipos').DataTable({responsive:true,autoWidth:false,language:{url:'//cdn.datatables.net/plug-ins/1.13.11/i18n/es-ES.json'},columnDefs:[{orderable:false,targets:-1}]});});</script>

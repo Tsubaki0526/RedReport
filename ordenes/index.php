@@ -20,7 +20,7 @@ $prioridades = ['Baja' => 'success', 'Media' => 'warning', 'Alta' => 'danger', '
     <div class="content"><div class="container-fluid">
         <div class="card"><div class="card-body p-0">
             <div class="table-container">
-            <table class="table table-sm mb-0">
+            <table id="tablaOrdenes" class="table table-sm mb-0">
                 <thead><tr><th>#</th><th>Cliente</th><th>Tipo</th><th>Prioridad</th><th>Tecnico</th><th>Estado</th><th>Creada</th><th></th></tr></thead>
                 <tbody>
                     <?php foreach ($ordenes as $o): ?>
@@ -113,6 +113,14 @@ $prioridades = ['Baja' => 'success', 'Media' => 'warning', 'Alta' => 'danger', '
 </div></div></div>
 
 <script>
+$('#tablaOrdenes').DataTable({
+    language: { url: '//cdn.datatables.net/plug-ins/1.13.11/i18n/es-ES.json' },
+    order: [[0, 'desc']],
+    pageLength: 25,
+    responsive: true,
+    autoWidth: false,
+    columnDefs: [{ orderable: false, targets: -1 }]
+});
 $(document).on('click', '.btn-ver-orden', function() {
     $.get('controles/ver_orden.php?id=' + $(this).data('id'), function(r) {
         $('#detalleOrdenBody').html(r);

@@ -49,7 +49,6 @@ $total_cartera = array_sum(array_column($cartera, 'total_deuda'));
                                     <td><a href="<?= $url ?>clientes/vistas/ficha.php?id=<?= $c['id_cliente'] ?>" class="btn btn-sm btn-info"><i class="fas fa-eye"></i></a></td>
                                 </tr>
                                 <?php endforeach; ?>
-                                <?php if (empty($cartera)): ?><tr><td colspan="8" class="text-center text-success py-4"><h5><i class="fas fa-check-circle me-2"></i>¡Todos los clientes estan al día!</h5></td></tr><?php endif; ?>
                             </tbody>
                         </table>
                     </div>
@@ -59,4 +58,4 @@ $total_cartera = array_sum(array_column($cartera, 'total_deuda'));
     </div>
 </div>
 <?php include('../parte2.php'); ?>
-<script>$(function(){$('#tablaCartera').DataTable({responsive:true,order:[[4,'desc']],dom:'Bfrtip',buttons:[{extend:'excel',text:'<i class=\"fas fa-file-excel\"></i> Excel'},{extend:'csv',text:'<i class=\"fas fa-file-csv\"></i> CSV'},{extend:'print',text:'<i class=\"fas fa-print\"></i> Imprimir'}]});});</script>
+<script>$(function(){$('#tablaCartera').DataTable({responsive:true,order:[[4,'desc']],dom:'Bfrtip',buttons:[{extend:'excel',text:'<i class=\"fas fa-file-excel\"></i> Excel'},{extend:'csv',text:'<i class=\"fas fa-file-csv\"></i> CSV'},{extend:'print',text:'<i class=\"fas fa-print\"></i> Imprimir'}],columnDefs:[{orderable:false,targets:7}],language:{url:'//cdn.datatables.net/plug-ins/1.13.11/i18n/es-ES.json',emptyTable:'Todos los clientes estan al dia'}});});</script>

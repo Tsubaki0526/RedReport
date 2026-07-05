@@ -198,6 +198,7 @@ include('../controles/lista_clientes_controles.php');
             responsive: true,
             lengthChange: true,
             autoWidth: false,
+            language: { url: '//cdn.datatables.net/plug-ins/1.13.11/i18n/es-ES.json' },
             columnDefs: [{
                     targets: -1,
                     visible: false
