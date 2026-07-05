@@ -87,8 +87,7 @@ $('#tablaMonitoreo').DataTable({
     order: [[0, 'asc']],
     pageLength: 25,
     responsive: true,
-    autoWidth: false,
-    columnDefs: [{ orderable: false, targets: -1 }]
+    autoWidth: false
 });
 function escanearBtn(id, ip) {
     $('#estado-' + id).html('<span class="badge bg-secondary"><i class="fas fa-spinner fa-spin"></i></span>');
