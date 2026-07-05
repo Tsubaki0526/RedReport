@@ -85,7 +85,6 @@ $('#tablaContratos').DataTable({
     order: [[0, 'desc']],
     pageLength: 25,
     responsive: true,
-    autoWidth: false,
-    columnDefs: [{ orderable: false, targets: -1 }]
+    autoWidth: false
 });
 </script>

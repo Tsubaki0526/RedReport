@@ -95,8 +95,7 @@ var tablaFacturas = $('#tablaFacturas').DataTable({
     responsive: true,
     autoWidth: false,
     dom: 'Bfrtip',
-    buttons: [{extend:'copy',text:'<i class="fas fa-copy"></i> Copiar'},{extend:'excel',text:'<i class="fas fa-file-excel"></i> Excel'},{extend:'csv',text:'<i class="fas fa-file-csv"></i> CSV'},{extend:'pdf',text:'<i class="fas fa-file-pdf"></i> PDF'},{extend:'print',text:'<i class="fas fa-print"></i> Imprimir'}],
-    columnDefs: [{ orderable: false, targets: -1 }]
+    buttons: [{extend:'copy',text:'<i class="fas fa-copy"></i> Copiar'},{extend:'excel',text:'<i class="fas fa-file-excel"></i> Excel'},{extend:'csv',text:'<i class="fas fa-file-csv"></i> CSV'},{extend:'pdf',text:'<i class="fas fa-file-pdf"></i> PDF'},{extend:'print',text:'<i class="fas fa-print"></i> Imprimir'}]
 });
 function filtrar() {
     tablaFacturas.column(7).search($('#filtroEstado').val()).draw();

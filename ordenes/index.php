@@ -118,8 +118,7 @@ $('#tablaOrdenes').DataTable({
     order: [[0, 'desc']],
     pageLength: 25,
     responsive: true,
-    autoWidth: false,
-    columnDefs: [{ orderable: false, targets: -1 }]
+    autoWidth: false
 });
 $(document).on('click', '.btn-ver-orden', function() {
     $.get('controles/ver_orden.php?id=' + $(this).data('id'), function(r) {
