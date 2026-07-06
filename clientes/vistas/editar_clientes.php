@@ -107,14 +107,14 @@ $redes = $queryRed->fetchAll(PDO::FETCH_ASSOC);
                       <?php foreach ($ips as $ip): ?>
                       <tr>
                         <td>
-                          <input type="text" name="ips[<?= $ip['id_ip'] ?>][ip_principal]"
+                          <input type="text" name="ips[<?= hescape($ip['id_ip']) ?>][ip_principal]"
                                  class="form-control form-control-sm"
-                                 value="<?= $ip['ip_principal'] ?>">
+                                 value="<?= hescape($ip['ip_principal']) ?>">
                         </td>
                         <td>
-                          <input type="text" name="ips[<?= $ip['id_ip'] ?>][megas]"
+                          <input type="text" name="ips[<?= hescape($ip['id_ip']) ?>][megas]"
                                  class="form-control form-control-sm"
-                                 value="<?= $ip['megas_contratadas'] ?>">
+                                 value="<?= hescape($ip['megas_contratadas']) ?>">
                         </td>
                       </tr>
                       <?php endforeach; ?>
@@ -139,19 +139,19 @@ $redes = $queryRed->fetchAll(PDO::FETCH_ASSOC);
                       <?php foreach ($redes as $red): ?>
                       <tr>
                         <td>
-                          <input type="text" name="red[<?= $red['id_red'] ?>][switch]"
+                          <input type="text" name="red[<?= hescape($red['id_red']) ?>][switch]"
                                  class="form-control form-control-sm"
-                                 value="<?= $red['switch'] ?>">
+                                 value="<?= hescape($red['switch']) ?>">
                         </td>
                         <td>
-                          <input type="text" name="red[<?= $red['id_red'] ?>][ip]"
+                          <input type="text" name="red[<?= hescape($red['id_red']) ?>][ip]"
                                  class="form-control form-control-sm"
-                                 value="<?= $red['ip'] ?>">
+                                 value="<?= hescape($red['ip']) ?>">
                         </td>
                         <td>
-                          <input type="text" name="red[<?= $red['id_red'] ?>][puerto]"
+                          <input type="text" name="red[<?= hescape($red['id_red']) ?>][puerto]"
                                  class="form-control form-control-sm"
-                                 value="<?= $red['puerto'] ?>">
+                                 value="<?= hescape($red['puerto']) ?>">
                         </td>
                       </tr>
                       <?php endforeach; ?>

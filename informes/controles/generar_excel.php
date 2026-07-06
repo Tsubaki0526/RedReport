@@ -7,7 +7,7 @@ $fecha_hasta = $_GET['fecha_hasta'] ?? date('Y-m-d');
 $filtro_id = $_GET['filtro_id'] ?? '';
 
 header('Content-Type: application/vnd.ms-excel; charset=utf-8');
-header('Content-Disposition: attachment; filename="informe_' . $tipo . '_' . date('Ymd') . '.csv"');
+header('Content-Disposition: attachment; filename="informe_' . preg_replace('/[^a-z_]/', '', $tipo) . '_' . date('Ymd') . '.csv"');
 header('Pragma: no-cache');
 
 $output = fopen('php://output', 'w');
@@ -20,11 +20,11 @@ if ($tipo == 'facturacion') {
     while ($r = $stmt->fetch()) fputcsv($output, [$r['numero_factura'], $r['cn']??'-', $r['fecha_emision'], $r['fecha_vencimiento'], $r['total'], $r['estado']]);
 } elseif ($tipo == 'ventas') {
     fputcsv($output, ['ID', 'Cliente', 'Vendedor', 'Plan', 'Monto', 'Tipo', 'Fecha']);
-    $sql = "SELECT v.*,c.nombre AS cn,u.nombre AS vn,p.nombre AS pn FROM tb_ventas v LEFT JOIN tb_clientes c ON v.id_cliente=c.id_cliente LEFT JOIN tb_usuarios u ON v.id_vendedor=u.id_usuario LEFT JOIN tb_planes p ON v.id_plan=p.id_plan WHERE v.fecha BETWEEN :d AND :h ORDER BY v.fecha DESC";
+    $sql = "SELECT v.*,c.nombre AS cn,u.nombre AS vn,p.nombre AS pn FROM tb_ventas v LEFT JOIN tb_clientes c ON v.id_cliente=c.id_cliente LEFT JOIN tb_usuarios u ON v.id_vendedor=u.id_usuario LEFT JOIN tb_contratos ct ON v.id_contrato=ct.id_contrato LEFT JOIN tb_planes p ON ct.id_plan=p.id_plan WHERE v.fecha BETWEEN :d AND :h ORDER BY v.fecha DESC";
     $params = ['d'=>$fecha_desde,'h'=>$fecha_hasta];
     if ($filtro_id) { $sql = str_replace('WHERE v.fecha', 'WHERE v.id_vendedor=:f AND v.fecha', $sql); $params['f'] = $filtro_id; }
     $stmt = $pdo->prepare($sql); $stmt->execute($params);
-    while ($r = $stmt->fetch()) fputcsv($output, [$r['id_venta'], $r['cn']??'-', $r['vn']??'-', $r['pn']??'-', $r['monto'], $r['tipo_venta'], $r['fecha']]);
+    while ($r = $stmt->fetch()) fputcsv($output, [$r['id_venta'], $r['cn']??'-', $r['vn']??'-', $r['pn']??'-', $r['monto'], $r['tipo'], $r['fecha']]);
 } elseif ($tipo == 'instalaciones') {
     fputcsv($output, ['Cliente', 'Direccion', 'Tecnico', 'Fecha instalacion']);
     $sql = "SELECT c.nombre AS cn,c.direccion,u.nombre AS tn,c.fecha_instalacion FROM tb_clientes c LEFT JOIN tb_usuarios u ON c.id_instalador=u.id_usuario WHERE c.fecha_instalacion BETWEEN :d AND :h ORDER BY c.fecha_instalacion DESC";

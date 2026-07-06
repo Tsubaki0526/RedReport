@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $referencia = trim($_POST['referencia'] ?? '');
 
     $pdo->beginTransaction();
-    $stmt = $pdo->prepare("INSERT INTO tb_pagos (id_factura, monto, metodo, referencia, id_usuario, fecha_pago) VALUES (?,?,?,?,1,NOW())");
+    $stmt = $pdo->prepare("INSERT INTO tb_pagos (id_factura, monto, metodo_pago, referencia, id_usuario, fecha_pago) VALUES (?,?,?,?,1,NOW())");
     $stmt->execute([$id, $monto, $metodo, $referencia]);
 
     $stmt = $pdo->prepare("UPDATE tb_facturas SET estado='pagada', fecha_pago=NOW() WHERE id_factura=?");

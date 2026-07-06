@@ -30,11 +30,11 @@ $vendedores = $pdo->query("SELECT id_usuario, nombre FROM tb_usuarios WHERE id_r
                     </div>
                     <div class="col-md-2">
                         <label class="form-label">Desde</label>
-                        <input type="date" name="fecha_desde" class="form-control form-control-sm" value="<?= $fecha_desde ?>">
+                        <input type="date" name="fecha_desde" class="form-control form-control-sm" value="<?= hescape($fecha_desde) ?>">
                     </div>
                     <div class="col-md-2">
                         <label class="form-label">Hasta</label>
-                        <input type="date" name="fecha_hasta" class="form-control form-control-sm" value="<?= $fecha_hasta ?>">
+                        <input type="date" name="fecha_hasta" class="form-control form-control-sm" value="<?= hescape($fecha_hasta) ?>">
                     </div>
                     <div class="col-md-3">
                         <label class="form-label"><?= $tipo=='ventas'?'Vendedor':($tipo=='instalaciones'?'Técnico':'Filtro') ?></label>
@@ -49,8 +49,8 @@ $vendedores = $pdo->query("SELECT id_usuario, nombre FROM tb_usuarios WHERE id_r
                     </div>
                     <div class="col-md-3 d-flex gap-2">
                         <button type="submit" class="btn btn-primary btn-sm"><i class="fas fa-search"></i> Filtrar</button>
-                        <a href="controles/generar_pdf.php?tipo=<?= $tipo ?>&fecha_desde=<?= $fecha_desde ?>&fecha_hasta=<?= $fecha_hasta ?>&filtro_id=<?= $filtro_id ?>" class="btn btn-danger btn-sm" target="_blank"><i class="fas fa-file-pdf"></i> PDF</a>
-                        <a href="controles/generar_excel.php?tipo=<?= $tipo ?>&fecha_desde=<?= $fecha_desde ?>&fecha_hasta=<?= $fecha_hasta ?>&filtro_id=<?= $filtro_id ?>" class="btn btn-success btn-sm"><i class="fas fa-file-excel"></i> Excel</a>
+                        <a href="controles/generar_pdf.php?tipo=<?= urlencode($tipo) ?>&fecha_desde=<?= urlencode($fecha_desde) ?>&fecha_hasta=<?= urlencode($fecha_hasta) ?>&filtro_id=<?= urlencode($filtro_id) ?>" class="btn btn-danger btn-sm" target="_blank"><i class="fas fa-file-pdf"></i> PDF</a>
+                        <a href="controles/generar_excel.php?tipo=<?= urlencode($tipo) ?>&fecha_desde=<?= urlencode($fecha_desde) ?>&fecha_hasta=<?= urlencode($fecha_hasta) ?>&filtro_id=<?= urlencode($filtro_id) ?>" class="btn btn-success btn-sm"><i class="fas fa-file-excel"></i> Excel</a>
                     </div>
                 </form>
             </div>
@@ -82,12 +82,12 @@ $vendedores = $pdo->query("SELECT id_usuario, nombre FROM tb_usuarios WHERE id_r
                                     <tr><td><?= hescape($r['numero_factura']) ?></td><td><?= hescape($r['cliente_nombre']??'-') ?></td><td><?= $r['fecha_emision'] ?></td><td><?= $r['fecha_vencimiento'] ?></td><td>$<?= number_format($r['total'], 0) ?></td><td><span class="badge bg-<?= ['pendiente'=>'warning','pagada'=>'success','vencida'=>'danger','anulada'=>'secondary'][$r['estado']]??'secondary' ?>"><?= $r['estado'] ?></span></td></tr>
                                 <?php endwhile; ?>
                             <?php elseif ($tipo == 'ventas'):
-                                $sql = "SELECT v.*, c.nombre AS cliente_nombre, u.nombre AS vendedor_nombre, p.nombre AS plan_nombre FROM tb_ventas v LEFT JOIN tb_clientes c ON v.id_cliente=c.id_cliente LEFT JOIN tb_usuarios u ON v.id_vendedor=u.id_usuario LEFT JOIN tb_planes p ON v.id_plan=p.id_plan WHERE v.fecha BETWEEN :desde AND :hasta ORDER BY v.fecha DESC";
+                                $sql = "SELECT v.*, c.nombre AS cliente_nombre, u.nombre AS vendedor_nombre, p.nombre AS plan_nombre FROM tb_ventas v LEFT JOIN tb_clientes c ON v.id_cliente=c.id_cliente LEFT JOIN tb_usuarios u ON v.id_vendedor=u.id_usuario LEFT JOIN tb_contratos ct ON v.id_contrato=ct.id_contrato LEFT JOIN tb_planes p ON ct.id_plan=p.id_plan WHERE v.fecha BETWEEN :desde AND :hasta ORDER BY v.fecha DESC";
                                 $params = ['desde'=>$fecha_desde, 'hasta'=>$fecha_hasta];
                                 if ($filtro_id) { $sql = str_replace('WHERE v.fecha', 'WHERE v.id_vendedor=:filtro AND v.fecha', $sql); $params['filtro'] = $filtro_id; }
                                 $stmt = $pdo->prepare($sql); $stmt->execute($params);
                                 while ($r = $stmt->fetch()): ?>
-                                    <tr><td><?= $r['id_venta'] ?></td><td><?= hescape($r['cliente_nombre']??'-') ?></td><td><?= hescape($r['vendedor_nombre']??'-') ?></td><td><?= hescape($r['plan_nombre']??'-') ?></td><td>$<?= number_format($r['monto'], 0) ?></td><td><span class="badge bg-info"><?= $r['tipo_venta'] ?></span></td><td><?= $r['fecha'] ?></td></tr>
+                                    <tr><td><?= $r['id_venta'] ?></td><td><?= hescape($r['cliente_nombre']??'-') ?></td><td><?= hescape($r['vendedor_nombre']??'-') ?></td><td><?= hescape($r['plan_nombre']??'-') ?></td><td>$<?= number_format($r['monto'], 0) ?></td><td><span class="badge bg-info"><?= $r['tipo'] ?></span></td><td><?= $r['fecha'] ?></td></tr>
                                 <?php endwhile; ?>
                             <?php elseif ($tipo == 'instalaciones'):
                                 $sql = "SELECT c.nombre AS cliente_nombre, c.direccion, u.nombre AS tecnico_nombre, c.fecha_instalacion FROM tb_clientes c LEFT JOIN tb_usuarios u ON c.id_instalador=u.id_usuario WHERE c.fecha_instalacion BETWEEN :desde AND :hasta ORDER BY c.fecha_instalacion DESC";
@@ -118,4 +118,4 @@ $vendedores = $pdo->query("SELECT id_usuario, nombre FROM tb_usuarios WHERE id_r
     </div></div>
 </div>
 <?php include('../parte2.php'); ?>
-<script>$('#tablaInforme').DataTable({pageLength:25,responsive:true,autoWidth:false,language:{url:'//cdn.datatables.net/plug-ins/1.13.11/i18n/es-ES.json'},dom:'Bfrtip',buttons:['copy','excel','pdf','print'],columnDefs:[{orderable:false,targets:7}]});</script>
+<script>$('#tablaInforme').DataTable({pageLength:25,responsive:true,autoWidth:false,language:{url:'//cdn.datatables.net/plug-ins/1.13.11/i18n/es-ES.json'},dom:'Bfrtip',buttons:['copy','excel','pdf','print']});</script>

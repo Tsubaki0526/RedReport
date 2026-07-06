@@ -108,10 +108,13 @@
 - **Visor de Logs**: PHP error log viewer con DataTable, descarga y limpieza
 - **Documentación API**: Página interactiva con todos los endpoints REST documentados
 - **Cola de Correos**: Sistema de colas asíncronas (tb_email_queue) con reprocesamiento
+- **App Móvil PWA**: `movil/` con manifest.json + sw.js, login unificado (empleado/cliente), bottom nav tipo app nativa, instalador views (dashboard, instalación con GPS+fotos+firma+equipo, órdenes CRUD), cliente views (dashboard, facturas, tickets). Dark mode automático vía `prefers-color-scheme`
 
 ### Pending
 - Equipment photo upload in `realizar.php` (front-end polish)
 - Migrate to production hosting (currently ngrok for demos)
+- PWA icons: crear `public/img/icon-192.png` y `icon-512.png` (actualmente referenciados en manifest.json pero sin archivos)
+- Service Worker: registrar en `movil/login.php` con `navigator.serviceWorker.register('sw.js')`
 
 ## Relevant Files
 - `redreport.sql` — 24 tables: tb_clientes, tb_ips, tb_red, tb_rol, tb_usuarios, tb_bitacora, tb_tipos_equipo, tb_equipos, tb_cobertura_zonas, tb_facturas, tb_factura_items, tb_planes, tb_contratos, tb_ventas, tb_empresa, tb_instalacion_fotos, tb_pagos, tb_ordenes, tb_tickets, tb_notificaciones, tb_modulos, tb_permisos, tb_plantillas_email
@@ -126,3 +129,4 @@
 - `facturacion/pdf_comprobante.php` — payment receipt PDF
 - `facturacion/registrar_pago.php` — payment form with metodo/referencia
 - `instalaciones/controles/subir_foto.php` — photo upload for installations
+- `movil/` — PWA mobile app: manifest.json, sw.js, login unificado, instalador dashboard/instalacion/ordenes, cliente dashboard/facturas/tickets. Bottom nav, dark mode automático

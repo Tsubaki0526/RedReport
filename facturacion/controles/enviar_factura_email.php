@@ -9,7 +9,9 @@ require_once '../../autoload.inc.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-csrf_verify($_POST['_csrf_token'] ?? '');
+if (!csrf_verify($_POST['_csrf_token'] ?? '')) {
+    csrf_die();
+}
 $id_factura = intval($_POST['id_factura'] ?? 0);
 
 $stmt = $pdo->prepare("SELECT f.*, c.nombre AS cliente_nombre, c.email, c.documento, c.direccion, c.telefono
@@ -116,7 +118,7 @@ try {
 
         echo "<script>Swal.fire({icon:'success',title:'Enviada',text:'Factura enviada a {$factura['email']}'}).then(()=>window.location='../ver.php?id=$id_factura');</script>";
     } catch (Exception $e2) {
-        echo "<script>Swal.fire({icon:'error',title:'Error',text:'Error al enviar: {$e2->getMessage()}'}).then(()=>window.location='../ver.php?id=$id_factura');</script>";
+        echo "<script>Swal.fire({icon:'error',title:'Error',text:'Error al enviar: " . hescape($e2->getMessage()) . "'}).then(()=>window.location='../ver.php?id=$id_factura');</script>";
     }
 }
 

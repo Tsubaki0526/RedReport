@@ -301,6 +301,14 @@ function navActive($prefix) {
             </a>
           </li>
 
+          <!-- App Móvil -->
+          <li class="nav-item">
+            <a href="<?= $url ?>movil/" class="nav-link" target="_blank">
+              <i class="fas fa-mobile-alt nav-icon"></i>
+              <span>App Móvil</span>
+            </a>
+          </li>
+
           <li class="nav-item"><hr class="sidebar-divider"></li>
 
           <!-- Usuarios y Seguridad -->

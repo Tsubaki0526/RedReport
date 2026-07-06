@@ -35,10 +35,10 @@ $adeudado = $adeudado->fetch()['total'];
 
 // Actividad reciente (timeline)
 $timeline = [];
-$stmt = $pdo->prepare("SELECT 'factura' AS tipo, CONCAT('Factura ', numero) AS titulo, CONCAT('$', FORMAT(total, 0)) AS detalle, fecha_emision AS fecha, CASE WHEN estado='pagada' THEN 'success' WHEN estado='anulada' THEN 'danger' ELSE 'primary' END AS color, estado AS estado FROM tb_facturas WHERE id_cliente = :id");
+$stmt = $pdo->prepare("SELECT 'factura' AS tipo, CONCAT('Factura ', numero_factura) AS titulo, CONCAT('$', FORMAT(total, 0)) AS detalle, fecha_emision AS fecha, CASE WHEN estado='pagada' THEN 'success' WHEN estado='anulada' THEN 'danger' ELSE 'primary' END AS color, estado AS estado FROM tb_facturas WHERE id_cliente = :id");
 $stmt->execute([':id' => $id_cliente]);
 $timeline = array_merge($timeline, $stmt->fetchAll());
-$stmt = $pdo->prepare("SELECT 'pago' AS tipo, CONCAT('Pago - ', metodo) AS titulo, CONCAT('$', FORMAT(monto, 0)) AS detalle, fecha_pago AS fecha, 'success' AS color, metodo AS estado FROM tb_pagos WHERE id_cliente = :id");
+$stmt = $pdo->prepare("SELECT 'pago' AS tipo, CONCAT('Pago - ', p.metodo_pago) AS titulo, CONCAT('$', FORMAT(p.monto, 0)) AS detalle, p.fecha_pago AS fecha, 'success' AS color, p.metodo_pago AS estado FROM tb_pagos p INNER JOIN tb_facturas f ON p.id_factura = f.id_factura WHERE f.id_cliente = :id");
 $stmt->execute([':id' => $id_cliente]);
 $timeline = array_merge($timeline, $stmt->fetchAll());
 $stmt = $pdo->prepare("SELECT 'ticket' AS tipo, CONCAT('Ticket: ', asunto) AS titulo, '' AS detalle, fecha_creacion AS fecha, CASE WHEN estado='resuelto' THEN 'success' WHEN estado='cerrado' THEN 'secondary' ELSE 'warning' END AS color, estado AS estado FROM tb_tickets WHERE id_cliente = :id");

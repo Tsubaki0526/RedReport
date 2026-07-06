@@ -1,0 +1,11 @@
+{
+  "name": "RedReport Móvil",
+  "short_name": "RedReport",
+  "description": "App móvil para instaladores y clientes",
+  "start_url": "/RedReport/movil/",
+  "scope": "/RedReport/movil/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#2563eb",
+  "orientation": "portrait"
+}
