@@ -1,0 +1,43 @@
+RedReport Management System
+Copyright (c) 2026 RedReport
+
+--------------------------------------------------------
+LICENCIA REGULAR CodeCanyon
+--------------------------------------------------------
+
+This license grants you, the purchaser, the right to use
+the purchased software (RedReport Management System) under
+the terms of the CodeCanyon Regular License.
+
+SUMMARY:
+
+1. YOU CAN:
+   - Use RedReport on a single domain or project
+   - Install it for your own business or your client's business
+   - Modify the source code to fit your needs
+   - Receive free updates for the lifetime of the product
+   - Get technical support for 6 months from purchase date
+
+2. YOU CANNOT:
+   - Redistribute or resell the source code
+   - Offer the software as a hosted SaaS service without a separate license
+   - Remove or alter the copyright notices
+   - Sub-license the software
+   - Use the software in a project that would compete with the original
+
+3. WARRANTY:
+   The software is provided "AS IS", without warranty of any kind,
+   express or implied, including but not limited to the warranties
+   of merchantability, fitness for a particular purpose and
+   noninfringement.
+
+4. LIABILITY:
+   In no event shall the author be liable for any claim, damages
+   or other liability arising from the use of the software.
+
+--------------------------------------------------------
+For full license details, visit:
+https://codecanyon.net/licenses/regular
+
+For extended license (multi-domain, SaaS hosting), contact:
+jorge.valdeblanquez.tech@gmail.com

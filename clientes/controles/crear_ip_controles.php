@@ -1,6 +1,7 @@
 <?php
 include('../../app/config/conexion.php');
 require_once('../../app/config/seguridad.php');
+verificar_acceso([1, 2]);
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (!csrf_verify($_POST['_csrf_token'] ?? '')) { csrf_die(); }

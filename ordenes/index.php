@@ -1,5 +1,6 @@
 <?php
 include('../sesion.php');
+verificar_acceso([1, 2, 3]);
 require_once '../app/config/conexion.php';
 include('../parte1.php');
 

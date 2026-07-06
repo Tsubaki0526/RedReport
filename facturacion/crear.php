@@ -1,5 +1,6 @@
 <?php
 include('../sesion.php');
+verificar_acceso([1, 2]);
 include('../parte1.php');
 require_once '../app/config/conexion.php';
 $clientes = $pdo->query("SELECT id_cliente, nombre, documento FROM tb_clientes ORDER BY nombre")->fetchAll(PDO::FETCH_ASSOC);

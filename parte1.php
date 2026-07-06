@@ -311,6 +311,7 @@ function navActive($prefix) {
 
           <li class="nav-item"><hr class="sidebar-divider"></li>
 
+          <?php if ($id_rol == 1): ?>
           <!-- Usuarios y Seguridad -->
           <li class="nav-item">
             <a href="#" class="nav-link <?= navActive('usuarios') ?>" data-bs-toggle="collapse" data-bs-target="#menuUsuarios" aria-expanded="<?= isAriaExpanded('menuUsuarios') ?>">
@@ -336,6 +337,7 @@ function navActive($prefix) {
               </li>
             </ul>
           </li>
+          <?php endif; ?>
 
           <?php if ($id_rol == 1): ?>
           <!-- Configuracion -->

@@ -2,7 +2,7 @@
 session_start();
 require_once('../../app/config/conexion.php');
 require_once('../../app/config/seguridad.php');
-if ($_SESSION['id_rol'] != 1) die("Acceso denegado");
+verificar_acceso([1]);
 if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !csrf_verify($_POST['_csrf_token'] ?? '')) csrf_die();
 
 $id_tipo = $_POST['id_tipo_equipo'] ?? 0;

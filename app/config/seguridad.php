@@ -62,6 +62,14 @@ function bitacora($pdo, $id_usuario, $accion, $tabla, $id_registro = null, $deta
     }
 }
 
+function verificar_acceso($roles_permitidos) {
+    if (!isset($_SESSION['id_rol']) || !in_array($_SESSION['id_rol'], $roles_permitidos)) {
+        $url = defined('APP_URL') ? APP_URL : '../';
+        header("Location: " . $url . "index.php");
+        exit();
+    }
+}
+
 function verificar_sesion() {
     if (empty($_SESSION['id_usuario'])) {
         return false;

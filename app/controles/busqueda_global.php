@@ -1,8 +1,15 @@
 <?php
 header('Content-Type: application/json');
+session_start();
 require_once __DIR__ . '/../config/config.php';
 require_once __DIR__ . '/../config/conexion.php';
 require_once __DIR__ . '/../config/seguridad.php';
+
+if (!isset($_SESSION['id_usuario'])) {
+    http_response_code(401);
+    echo json_encode(['error' => 'No autorizado']);
+    exit;
+}
 
 $q = trim($_GET['q'] ?? '');
 if (strlen($q) < 2) { echo json_encode([]); exit; }

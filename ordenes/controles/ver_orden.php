@@ -1,6 +1,8 @@
 <?php
 session_start();
 require_once __DIR__ . '/../../app/config/conexion.php';
+require_once __DIR__ . '/../../app/config/seguridad.php';
+verificar_acceso([1, 2, 3]);
 
 $id = intval($_GET['id'] ?? 0);
 $stmt = $pdo->prepare("SELECT o.*, c.nombre AS cliente_nombre, c.documento, c.telefono, c.direccion, c.email,

@@ -1,6 +1,8 @@
 <?php
 include('../../sesion.php');
 require_once '../../app/config/conexion.php';
+require_once '../../app/config/seguridad.php';
+verificar_acceso([1, 2]);
 $id = intval($_GET['id'] ?? 0);
 if ($id) {
     $stmt = $pdo->prepare("DELETE FROM tb_dispositivos WHERE id_dispositivo=?");

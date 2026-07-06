@@ -1,5 +1,8 @@
 <?php
-require_once '../../app/config/conexion.php';
+session_start();
+require_once __DIR__ . '/../../app/config/conexion.php';
+require_once __DIR__ . '/../../app/config/seguridad.php';
+verificar_acceso([1, 2]);
 
 $tipo = $_GET['tipo'] ?? 'facturacion';
 $fecha_desde = $_GET['fecha_desde'] ?? date('Y-m-01');

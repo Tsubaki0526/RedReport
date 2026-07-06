@@ -1,0 +1,69 @@
+CHANGELOG
+=========
+
+RedReport Management System
+
+2.0.0 (2026-07-05)
+------------------
+
+### Nuevo
+- Dashboard con KPIs reales, gráfico Chart.js, top morosos, ordenes/tickets recientes
+- Módulo de Facturación: crear facturas con items dinámicos, numeración FAC-XXXXX, PDF Dompdf, cartera
+- Facturación recurrente: generación automática para contratos activos sin factura del mes
+- Pagos: historial con monto, método, referencia, comprobante PDF
+- Módulo de Ventas: dashboard, planes CRUD, contratos, registro de ventas, comisiones
+- Módulo de Inventario: equipos CRUD, filtros, alertas de stock mínimo, devolución
+- Módulo de Instalaciones: asignación, geolocalización Leaflet, fotos, registro equipos
+- Órdenes de servicio: CRUD, asignación técnica, estados, prioridad, solución
+- Tickets de soporte: categorías, asignación, resolución, auditoría
+- Mapa de cobertura Leaflet/OSM con zonas poligonales y calor
+- Sistema de roles y permisos: Administrador, Gestión, Instalador, Ventas
+- Permisos personalizados por rol (tb_modulos + tb_permisos)
+- Sistema de seguridad: CSRF, bloqueo 5/15min, timeout 30min, bitácora, XSS
+- Autenticación 2FA con Google Authenticator
+- Portal del cliente: dashboard, facturas, pagos, tickets
+- Notificaciones automáticas: instalaciones pendientes, facturas vencidas, stock bajo
+- Búsqueda global (Ctrl+K): clientes, facturas, tickets, órdenes
+- Importación CSV con preview, mapeo de columnas y carga masiva
+- API REST con autenticación por API Key
+- Informes exportables PDF/CSV
+- Monitoreo SNMP con ping y escaneo
+- Cola de correos con reprocesamiento
+- Plantillas de email con variables dinámicas
+- Health Dashboard: PHP/MySQL/disco/backups
+- Mantenimiento BD: optimizar, reparar, analizar
+- Visor de logs PHP
+- Auditoría con filtros por usuario/acción/fecha
+- Modo oscuro con persistencia localStorage
+- Perfil de usuario y cambio de contraseña
+- Configuración del sistema desde interfaz web
+- App móvil PWA con bottom nav y dark mode
+- Backup de base de datos (mysqldump)
+- DataTables con botones de exportación (Excel, CSV, PDF, Copy, Print)
+- Timeline del cliente en ficha.php
+- Migración completa de AdminLTE 3 a Bootstrap 5
+- Rediseño CSS profesional (sidebar oscura, gradientes, cards modernas)
+- Sidebar dinámico con módulo activo resaltado
+
+### Correcciones
+- TypeError/TN18 en DataTables: filas colspan reemplazadas por language.emptyTable
+- Inicialización de DataTable siempre después de parte2.php
+- targets: -1 eliminado globalmente (incompatible con responsive: true)
+- XSS almacenado en editar_clientes.php
+- CSRF bypass en enviar_factura_email.php
+- SQL queries corregidas en informes (v.id_plan, $r[tipo_venta])
+- Columnas reales de tb_pagos: metodo_pago (no metodo)
+- Header injection en generar_excel.php
+- Inyección SQL potencial en clientes/vistas/ficha.php
+- 280+ archivos PHP verificados con php -l
+
+### Cambios
+- Renovación completa de interfaz: AdminLTE 3 → Bootstrap 5
+- redreport.sql reescrito con datos demo limpios
+- .env.example con placeholders para configuración
+- Dependencias: Bootstrap 5.3.3, Font Awesome 6.5.2, DataTables 1.13.11
+- Sidebar: dark #0f172a, brand #2563eb
+
+1.0.0 (2026-01-15)
+------------------
+- Versión inicial del sistema

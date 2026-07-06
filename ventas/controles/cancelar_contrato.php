@@ -3,6 +3,8 @@ session_start();
 require_once __DIR__ . '/../../app/config/conexion.php';
 require_once __DIR__ . '/../../app/config/seguridad.php';
 
+verificar_acceso([1, 2, 4]);
+
 if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !csrf_verify($_POST['_csrf_token'] ?? '')) {
     csrf_die();
 }

@@ -52,6 +52,7 @@ a{color:#60a5fa}
 </div>
 <script>
 function setRole(r){document.querySelectorAll('.role-tab button').forEach(b=>b.classList.toggle('active',b.dataset.role===r));document.getElementById('tipoInput').value=r}
+if ('serviceWorker' in navigator) { navigator.serviceWorker.register('sw.js'); }
 </script>
 </body>
 </html>

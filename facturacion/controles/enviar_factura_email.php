@@ -3,6 +3,7 @@ session_start();
 require_once '../../app/config/config.php';
 require_once '../../app/config/conexion.php';
 require_once '../../app/config/seguridad.php';
+verificar_acceso([1, 2]);
 require_once '../../app/controles/email_queue.php';
 require_once '../../autoload.inc.php';
 

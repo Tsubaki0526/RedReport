@@ -2,6 +2,7 @@
 session_start();
 require_once __DIR__ . '/../../app/config/conexion.php';
 require_once __DIR__ . '/../../app/config/seguridad.php';
+verificar_acceso([1, 2]);
 
 header('Content-Type: application/json; charset=utf-8');
 

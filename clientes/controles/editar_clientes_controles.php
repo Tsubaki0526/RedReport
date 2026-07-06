@@ -2,6 +2,7 @@
 include('../../app/config/conexion.php');
 if (session_status() === PHP_SESSION_NONE) session_start();
 require_once('../../app/config/seguridad.php');
+verificar_acceso([1, 2]);
 if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !csrf_verify($_POST['_csrf_token'] ?? '')) {
     csrf_die();
 }

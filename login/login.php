@@ -22,7 +22,7 @@ require_once '../app/config/seguridad.php';
 <body class="login-page">
     <div class="login-box">
         <div class="login-logo">
-            <img src="../public/img/logo.png" alt="Logo">
+            <img src="../public/img/favicon.png" alt="Logo">
             <h3>RedReport</h3>
             <p class="text-muted">Inicia sesion para comenzar</p>
         </div>

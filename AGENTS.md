@@ -7,7 +7,7 @@
 ## Architecture
 - `app/config/config.php` — core config with `.env` loading via `getenv()` fallback
 - `app/config/conexion.php` — PDO singleton via `$pdo`, utf8mb4, ERRMODE_EXCEPTION
-- `app/config/seguridad.php` — `csrf_field()`, `csrf_verify()`, `verificar_sesion()`, `verificar_bloqueo()`, `bitacora()`, `hescape()`
+- `app/config/seguridad.php` — `csrf_field()`, `csrf_verify()`, `verificar_sesion()`, `verificar_acceso()`, `verificar_bloqueo()`, `bitacora()`, `hescape()`
 - `sesion.php` — session start + security headers + timeout check
 - `parte1.php` / `parte2.php` — layout templates (dark sidebar, BS5 CDN, DataTables Buttons)
 - `.env` — DB_HOST, DB_NAME, DB_USER, DB_PASS, SMTP_*, APP_URL, APP_NAME, APP_ENV, APP_DEBUG, API_KEY
@@ -110,11 +110,29 @@
 - **Cola de Correos**: Sistema de colas asíncronas (tb_email_queue) con reprocesamiento
 - **App Móvil PWA**: `movil/` con manifest.json + sw.js, login unificado (empleado/cliente), bottom nav tipo app nativa, instalador views (dashboard, instalación con GPS+fotos+firma+equipo, órdenes CRUD), cliente views (dashboard, facturas, tickets). Dark mode automático vía `prefers-color-scheme`
 
-### Pending
-- Equipment photo upload in `realizar.php` (front-end polish)
-- Migrate to production hosting (currently ngrok for demos)
-- PWA icons: crear `public/img/icon-192.png` y `icon-512.png` (actualmente referenciados en manifest.json pero sin archivos)
-- Service Worker: registrar en `movil/login.php` con `navigator.serviceWorker.register('sw.js')`
+### In Progress
+- *(none)*
+
+### Done
+- **CodeCanyon package files**: `changelog.txt`, `license.txt`, `screenshots/` creados
+- **README.md profesional**: Rewrite completo con features, requisitos, instalación, stack, estructura, roles, API
+- **Web installer**: `install/index.php` con wizard de configuración (requisitos → DB → admin → instalación). Detecta si .env existe, prueba conexión DB, importa SQL, configura admin
+- **`verificar_acceso()` helper**: Nueva función en `seguridad.php` para role-based access control centralizado. Acepta array de roles permitidos, redirige a index si no autorizado
+- **Role-based access checks**: Agregados a 50+ archivos (todas entry points y control files):
+  - Clientes (1,2), Facturación (1,2), Ventas (1,2,4), Inventario (1,2)
+  - Órdenes (1,2,3), Tickets (1,2), Informes (1,2), Monitoreo (1,2)
+  - Usuarios (1), Backup (1), Auditoría (1), Configuración (1) — ya existía
+  - Control files: clientes, facturacion, ventas, ordenes, tickets, monitoreo, inventario, usuarios
+- **Sidebar gates fijadas**: "Usuarios y Seguridad" ahora solo visible para Admin (rol 1)
+- **Broken gate en auditoría/index.php**: `verificar_sesion(...)` reemplazado por `verificar_acceso([1])`
+- **Auth check en busqueda_global.php**: session_start + id_usuario check (AJAX search era accesible sin auth)
+- **Syntax check**: 40+ archivos editados verificados con `php -l`, 0 errores
+- **PWA icons reales**: `icon-192.png` y `icon-512.png` creados con Python/Pillow (wifi icon #2563eb)
+- **manifest.json**: icons array agregado para PWA install prompt
+- **Service Worker registration**: `navigator.serviceWorker.register('sw.js')` en `movil/login.php`
+- **subir_foto.php**: CSRF bypass corregido (return value verificado), AJAX soporte agregado (JSON response)
+- **realizar.php**: Photo upload con drag-and-drop, preview instantáneo, subida AJAX sin recarga, galería dinámica
+- **PHP 8.x compatibilidad**: Escaneo completo — 0 funciones deprecadas/eliminadas encontradas en código de producción
 
 ## Relevant Files
 - `redreport.sql` — 24 tables: tb_clientes, tb_ips, tb_red, tb_rol, tb_usuarios, tb_bitacora, tb_tipos_equipo, tb_equipos, tb_cobertura_zonas, tb_facturas, tb_factura_items, tb_planes, tb_contratos, tb_ventas, tb_empresa, tb_instalacion_fotos, tb_pagos, tb_ordenes, tb_tickets, tb_notificaciones, tb_modulos, tb_permisos, tb_plantillas_email

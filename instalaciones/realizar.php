@@ -101,25 +101,29 @@ $equipos_asignados = $equipos_asignados->fetchAll();
                         <div class="card">
                             <div class="card-header"><h3 class="card-title">Fotos / Evidencias</h3></div>
                             <div class="card-body">
-                                <form method="POST" action="controles/subir_foto.php" enctype="multipart/form-data">
-                                    <?= csrf_field() ?>
-                                    <input type="hidden" name="id_cliente" value="<?= $cliente['id_cliente'] ?>">
-                                    <div class="mb-3">
-                                        <input type="file" name="foto" class="form-control form-control-sm" accept="image/*" required>
+                                <div id="dropZone" class="border border-2 border-dashed rounded p-4 text-center mb-3" style="border-style: dashed !important; cursor:pointer; background:#f8f9fa;">
+                                    <i class="fas fa-cloud-upload-alt fa-2x text-muted"></i>
+                                    <p class="mb-1 text-muted">Arrastra una foto aquí o haz clic para seleccionar</p>
+                                    <input type="file" id="fotoInput" name="foto" class="d-none" accept="image/*">
+                                </div>
+                                <div id="previewContainer" class="mb-3 d-none">
+                                    <div class="d-flex align-items-center gap-2 p-2 bg-light rounded">
+                                        <img id="previewImg" src="#" alt="Preview" style="height:60px;width:60px;object-fit:cover;border-radius:4px;">
+                                        <div class="flex-grow-1">
+                                            <input type="text" id="fotoDesc" class="form-control form-control-sm" placeholder="Descripcion (opcional)">
+                                        </div>
+                                        <button id="btnUploadFoto" class="btn btn-sm btn-info"><i class="fas fa-upload"></i></button>
+                                        <button id="btnCancelPreview" class="btn btn-sm btn-outline-secondary"><i class="fas fa-times"></i></button>
                                     </div>
-                                    <div class="mb-3">
-                                        <input type="text" name="descripcion" class="form-control form-control-sm" placeholder="Descripcion (opcional)">
-                                    </div>
-                                    <button type="submit" class="btn btn-sm btn-info"><i class="fas fa-upload"></i> Subir foto</button>
-                                </form>
-                                <?php
-                                $fotos = $pdo->prepare("SELECT * FROM tb_instalacion_fotos WHERE id_cliente = ? ORDER BY fecha_subida DESC");
-                                $fotos->execute([$cliente['id_cliente']]);
-                                $fotos = $fotos->fetchAll();
-                                if (!empty($fotos)): ?>
-                                <div class="row mt-3">
-                                    <?php foreach ($fotos as $f): ?>
-                                    <div class="col-4 col-md-3 mb-2">
+                                </div>
+                                <div id="uploadProgress" class="d-none mb-2"><div class="progress"><div class="progress-bar progress-bar-striped progress-bar-animated" style="width:100%">Subiendo...</div></div></div>
+                                <div id="fotosContainer" class="row">
+                                    <?php
+                                    $fotos = $pdo->prepare("SELECT * FROM tb_instalacion_fotos WHERE id_cliente = ? ORDER BY fecha_subida DESC");
+                                    $fotos->execute([$cliente['id_cliente']]);
+                                    $fotos = $fotos->fetchAll();
+                                    foreach ($fotos as $f): ?>
+                                    <div class="col-4 col-md-3 mb-2" data-foto="<?= hescape($f['nombre_archivo']) ?>">
                                         <a href="<?= APP_URL ?>public/uploads/<?= hescape($f['nombre_archivo']) ?>" target="_blank">
                                             <img src="<?= APP_URL ?>public/uploads/<?= hescape($f['nombre_archivo']) ?>" class="img-thumbnail" style="height:80px;object-fit:cover;">
                                         </a>
@@ -127,7 +131,6 @@ $equipos_asignados = $equipos_asignados->fetchAll();
                                     </div>
                                     <?php endforeach; ?>
                                 </div>
-                                <?php endif; ?>
                             </div>
                         </div>
 
@@ -177,5 +180,70 @@ document.getElementById('addEquipo').addEventListener('click', function() {
     row.querySelectorAll('input').forEach(i => i.value = '');
     row.querySelectorAll('select').forEach(s => s.selectedIndex = 0);
     document.getElementById('equiposContainer').appendChild(row);
+});
+
+// Photo upload with drag-and-drop and AJAX
+const dropZone = document.getElementById('dropZone');
+const fotoInput = document.getElementById('fotoInput');
+const previewContainer = document.getElementById('previewContainer');
+const previewImg = document.getElementById('previewImg');
+const fotoDesc = document.getElementById('fotoDesc');
+const uploadProgress = document.getElementById('uploadProgress');
+const fotosContainer = document.getElementById('fotosContainer');
+const csrfToken = document.querySelector('input[name="_csrf_token"]')?.value;
+
+dropZone.addEventListener('click', () => fotoInput.click());
+dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.style.background = '#e9ecef'; });
+dropZone.addEventListener('dragleave', () => { dropZone.style.background = '#f8f9fa'; });
+dropZone.addEventListener('drop', e => { e.preventDefault(); dropZone.style.background = '#f8f9fa'; handleFile(e.dataTransfer.files[0]); });
+fotoInput.addEventListener('change', () => { if (fotoInput.files[0]) handleFile(fotoInput.files[0]); });
+
+function handleFile(file) {
+    if (!file.type.startsWith('image/')) { alert('Solo imágenes'); return; }
+    const reader = new FileReader();
+    reader.onload = e => {
+        previewImg.src = e.target.result;
+        previewContainer.classList.remove('d-none');
+    };
+    reader.readAsDataURL(file);
+}
+
+document.getElementById('btnUploadFoto').addEventListener('click', function() {
+    const file = fotoInput.files[0];
+    if (!file) return;
+    const form = new FormData();
+    form.append('foto', file);
+    form.append('descripcion', fotoDesc.value);
+    form.append('id_cliente', '<?= $id_cliente ?>');
+    form.append('_csrf_token', csrfToken);
+    uploadProgress.classList.remove('d-none');
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', 'controles/subir_foto.php');
+    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+    xhr.onload = function() {
+        uploadProgress.classList.add('d-none');
+        if (xhr.status === 200) {
+            try {
+                const r = JSON.parse(xhr.responseText);
+                if (r.ok) {
+                    const col = document.createElement('div');
+                    col.className = 'col-4 col-md-3 mb-2';
+                    col.innerHTML = '<a href="' + r.url + '" target="_blank"><img src="' + r.url + '" class="img-thumbnail" style="height:80px;object-fit:cover;"></a>' +
+                        (r.descripcion ? '<small class="d-block text-muted">' + r.descripcion + '</small>' : '');
+                    fotosContainer.prepend(col);
+                    previewContainer.classList.add('d-none');
+                    fotoInput.value = '';
+                    fotoDesc.value = '';
+                } else { alert(r.error || 'Error al subir'); }
+            } catch(e) { alert('Error al procesar respuesta'); }
+        } else { alert('Error del servidor'); }
+    };
+    xhr.send(form);
+});
+
+document.getElementById('btnCancelPreview').addEventListener('click', function() {
+    previewContainer.classList.add('d-none');
+    fotoInput.value = '';
+    fotoDesc.value = '';
 });
 </script>

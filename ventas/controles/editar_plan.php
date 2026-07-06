@@ -7,9 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !csrf_verify($_POST['_csrf_token'] 
     csrf_die();
 }
 
-if ($_SESSION['id_rol'] != 1) {
-    die('Acceso denegado');
-}
+verificar_acceso([1]);
 
 $id_plan = intval($_POST['id_plan'] ?? 0);
 $nombre = trim($_POST['nombre'] ?? '');

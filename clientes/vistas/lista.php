@@ -1,5 +1,6 @@
 <?php
 include('../../sesion.php');
+verificar_acceso([1, 2]);
 include('../../parte1.php');
 include('../controles/lista_clientes_controles.php');
 ?>

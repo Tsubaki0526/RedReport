@@ -1,7 +1,7 @@
 ﻿<?php
 require_once __DIR__ . '/../app/config/conexion.php';
 require_once __DIR__ . '/../app/config/seguridad.php';
-verificar_sesion($_SESSION['id_rol'] ?? 0, [1]);
+verificar_acceso([1]);
 
 $filtro_usuario = $_GET['usuario'] ?? '';
 $filtro_accion  = $_GET['accion'] ?? '';
